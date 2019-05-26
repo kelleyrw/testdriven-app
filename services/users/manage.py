@@ -1,4 +1,4 @@
-# services/users/manage.py
+#!/usr/bin/env python3
 
 import sys
 import unittest
@@ -13,6 +13,13 @@ cli = FlaskGroup(create_app=create_app)
 def recreate_db():
     db.drop_all()
     db.create_all()
+    db.session.commit()
+
+@cli.command('seed_db')
+def seed_db():
+    """Seeds the database."""
+    db.session.add(User(username='ryan', email="ryan@foo"))
+    db.session.add(User(username='randy', email="randy@foo"))
     db.session.commit()
 
 @cli.command()

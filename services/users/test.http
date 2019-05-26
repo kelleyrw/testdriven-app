@@ -5,16 +5,20 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-http://localhost:5000/users/ping
+#http://localhost:5000/users/ping
+GET http://localhost:5000/users
 
 ###
 
-http://192.168.99.100:5001/users/ping
+#http://192.168.99.100:5001/users/ping
+#http://192.168.99.100:5001/users
+POST http://192.168.99.100:5001/users
+Content-Type: application/json
+
+{"username": "Scarlett", "email": "se@foo.com"}
+###
+
+http://192.168.99.100:5001/users
 
 ###
 
-http://localhost:5001/users/ping
-
-###
-k
-##vizio_acr_commercial_exposure#
