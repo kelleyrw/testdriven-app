@@ -1,15 +1,20 @@
 # services/users/project/api/users.py
 
 
-from flask import Blueprint, jsonify
+from flask import Blueprint
+from flask_restful import Resource, Api
 
 
 users_blueprint = Blueprint('users', __name__)
+api = Api(users_blueprint)
 
 
-@users_blueprint.route('/users/ping', methods=['GET'])
-def ping_pong():
-    return jsonify({
-        'status': 'success',
-        'message': 'pong!'
-    })
+class UsersPing(Resource):
+    def get(self):
+        return {
+            'status': 'success',
+            'message': 'pong!'
+        }
+
+
+api.add_resource(UsersPing, '/users/ping')
