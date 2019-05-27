@@ -89,7 +89,7 @@ class TestUserService(BaseTestCase):
             )
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-            self.assertIn("Sorry. That email already exists.", data["message"])
+            self.assertIn("That email already exists.", data["message"])
             self.assertIn("fail", data["status"])
 
     def test_single_user(self):
