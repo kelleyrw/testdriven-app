@@ -4,4 +4,4 @@
 *.iml
 __pycache__
 env
-users/htmlcov/index.html
+services/users/htmlcov
