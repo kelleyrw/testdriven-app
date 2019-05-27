@@ -16,6 +16,7 @@ def add_user(username, email):
     db.session.commit()
     return user
 
+
 class TestUserService(BaseTestCase):
     """Tests for the Users Service."""
 
@@ -111,7 +112,7 @@ class TestUserService(BaseTestCase):
     def test_all_users(self):
         """Ensure get all users behaves correctly."""
         add_user('Ryan', 'ryan@foo.com')
-        add_user('Randy','randy@foo.com')
+        add_user('Randy', 'randy@foo.com')
         with self.client:
             response = self.client.get('/users')
             data = json.loads(response.data.decode())
@@ -122,6 +123,22 @@ class TestUserService(BaseTestCase):
             self.assertIn('Randy', data['data']['users'][1]['username'])
             self.assertIn('randy@foo.com', data['data']['users'][1]['email'])
             self.assertIn('success', data['status'])
+
+    def test_delete_user(self):
+        """Ensure error is thrown if the email already exists."""
+        user = add_user(username='XXX-to-delete', email='bogus@foo.com')
+        with self.client:
+            response = self.client.delete(f'/users/{user.id}')
+            self.assertEqual(response.status_code, 202)
+
+            # ensure user is gone
+            self.assertIsNone(User.query.get(user.id))
+
+    def test_delete_user_doesnt_exist(self):
+        """Ensure error is thrown if the email already exists."""
+        with self.client:
+            response = self.client.delete(f'/users/77777777')
+            self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
 if __name__ == '__main__':

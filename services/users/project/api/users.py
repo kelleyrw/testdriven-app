@@ -1,5 +1,6 @@
 # services/users/project/api/users.py
 
+# from sqlalchemy import exc
 from sqlalchemy import exc
 from flask import Blueprint, request
 from flask_restful import Resource, Api
@@ -13,14 +14,19 @@ api = Api(users_blueprint)
 
 
 class UsersPing(Resource):
-    def get(self):
+
+    @staticmethod
+    def get():
         return {
             'status': 'success',
             'message': 'pong!'
         }
 
+
 class UsersList(Resource):
-    def post(self):
+
+    @staticmethod
+    def post():
         post_data = request.get_json()
         response_object = {
             'status': 'fail',
@@ -45,20 +51,22 @@ class UsersList(Resource):
             db.session.rollback()
             return response_object, status.HTTP_400_BAD_REQUEST
 
-    def get(self):
+    @staticmethod
+    def get():
         """Get all users"""
         response_object = {
             'status': 'success',
-            'data'  : {
+            'data': {
                 'users': [user.to_json() for user in User.query.all()]
             }
         }
         return response_object, status.HTTP_200_OK
 
 
-
 class Users(Resource):
-    def get(self, user_id):
+
+    @staticmethod
+    def get(user_id):
         """Get single user details"""
         user = User.query.get(user_id)
         response_object = {
@@ -72,6 +80,22 @@ class Users(Resource):
         }
         return response_object, status.HTTP_200_OK
 
+    @staticmethod
+    def delete(user_id):
+        """Get single user details"""
+        user = User.query.get(user_id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            response_object = {
+                'status': f'successfully deleted user {user_id}',
+            }
+            return response_object, status.HTTP_202_ACCEPTED
+        else:
+            response_object = {'message': f'User {user_id} doesn''t exist.'}
+            return response_object, status.HTTP_404_NOT_FOUND
+
+
 api.add_resource(UsersPing, '/users/ping')
 api.add_resource(UsersList, '/users')
-api.add_resource(Users    , '/users/<int:user_id>')
+api.add_resource(Users, '/users/<int:user_id>')
