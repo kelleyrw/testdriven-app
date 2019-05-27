@@ -7,3 +7,4 @@ Flask-Testing==0.7.1
 Flask-RESTful==0.3.7
 SQLAlchemy==1.2.14
 gunicorn==19.9.0
+coverage==4.5.3
