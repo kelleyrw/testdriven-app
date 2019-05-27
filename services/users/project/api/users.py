@@ -48,7 +48,7 @@ class UsersList(Resource):
                 response_object["message"] = f"{email} was added!"
                 return response_object, status.HTTP_201_CREATED
             else:
-                response_object["message"] = "Sorry. That email already exists."
+                response_object["message"] = "That email already exists."
                 return response_object, status.HTTP_400_BAD_REQUEST
         except exc.IntegrityError:
             db.session.rollback()
