@@ -17,8 +17,8 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # add entrypoint.sh
-COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 COPY ./.flake8 /usr/src/app/.flake8
+COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
 
 # add app

@@ -10,3 +10,5 @@ gunicorn==19.9.0
 coverage==4.5.3
 flake8==3.7.7
 black==19.3b0
+flask-debugtoolbar==0.10.1
+flask-cors==3.0.7
