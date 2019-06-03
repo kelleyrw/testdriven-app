@@ -4,3 +4,4 @@ Dockerfile
 Dockerfile-prod
 *.iml
 htmlcov
+migrations

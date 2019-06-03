@@ -10,8 +10,8 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(128), nullable=False)
-    email = db.Column(db.String(128), nullable=False)
+    username = db.Column(db.String(128), unique=True, nullable=False)
+    email = db.Column(db.String(128), unique=True, nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
     created_date = db.Column(db.DateTime, default=func.now(), nullable=False)
 
@@ -29,3 +29,10 @@ class User(db.Model):
 
     def to_json(self):
         return self.to_dict()
+
+
+def add_user(username, email):
+    user = User(username, email=email)
+    db.session.add(user)
+    db.session.commit()
+    return user
