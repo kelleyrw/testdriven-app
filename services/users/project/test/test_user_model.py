@@ -16,27 +16,45 @@ class TestUserModel(BaseTestCase):
     """
 
     def test_add_user(self):
-        user = add_user(username="justatest", email="test@test.com")
+        user = add_user(
+            username="justatest", email="test@test.com", password="foo"
+        )
         self.assertTrue(user.id)
         self.assertEqual(user.username, "justatest")
         self.assertEqual(user.email, "test@test.com")
+        self.assertTrue(user.password)
         self.assertTrue(user.active)
 
     def test_add_user_duplicate_username(self):
-        user = add_user(username="justatest", email="test@test.com")
-        duplicate_user = User(username=user.username, email="test@test2.com")
+        user = add_user(
+            username="justatest", email="test@test.com", password="foo"
+        )
+        duplicate_user = User(
+            username=user.username, email="test@test2.com", password="foo"
+        )
         db.session.add(duplicate_user)
         self.assertRaises(IntegrityError, db.session.commit)
 
     def test_add_user_duplicate_email(self):
-        user = add_user(username="justatest", email="test@test.com")
-        duplicate_user = User(username="justanothertest", email=user.email)
+        user = add_user(
+            username="justatest", email="test@test.com", password="foo"
+        )
+        duplicate_user = User(
+            username="justanothertest", email=user.email, password="foo"
+        )
         db.session.add(duplicate_user)
         self.assertRaises(IntegrityError, db.session.commit)
 
     def test_to_json(self):
-        user = add_user(username="justatest", email="test@test.com")
+        user = add_user(
+            username="justatest", email="test@test.com", password="foo"
+        )
         self.assertTrue(isinstance(user.to_json(), dict))
+
+    def test_passwords_are_random(self):
+        user_one = add_user("justatest", "test@test.com", "greaterthaneight")
+        user_two = add_user("justatest2", "test@test2.com", "greaterthaneight")
+        self.assertNotEqual(user_one.password, user_two.password)
 
 
 if __name__ == "__main__":

@@ -1,13 +1,11 @@
 # base image
-FROM python:3.7.2-alpine
+FROM python:3.7.3-slim
 
-# install dependencies
-RUN apk update && \
-    apk add --virtual build-deps gcc python-dev musl-dev && \
-    apk add postgresql-dev && \
-    apk add netcat-openbsd
+# install netcat
+RUN apt-get update && \
+    apt-get -y install netcat && \
+    apt-get clean
 
-#    apk add libc-dev && \
 # set working directory
 WORKDIR /usr/src/app
 
@@ -17,7 +15,6 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # add entrypoint.sh
-COPY ./.flake8 /usr/src/app/.flake8
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
 
