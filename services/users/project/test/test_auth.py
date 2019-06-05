@@ -3,10 +3,8 @@
 
 import json
 import unittest
-import time
 
-from project import db
-from project.api.models import User, add_user
+from project.api.models import add_user
 from project.test.base import BaseTestCase
 from flask_api import status
 from flask import current_app

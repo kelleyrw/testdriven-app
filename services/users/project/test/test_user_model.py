@@ -2,8 +2,6 @@
 
 
 import unittest
-import datetime as dt
-import jwt
 
 from project import db
 from project.api.models import User, add_user
