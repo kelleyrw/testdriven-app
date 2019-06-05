@@ -15,6 +15,9 @@ services:
             - APP_SETTINGS=project.config.DevelopmentConfig
             - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
             - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
+            - SECRET_KEY=my_precious
+            - TOKEN_EXPIRATION_DAYS=30
+            - TOKEN_EXPIRATION_SECONDS=0
         depends_on:
             - users-db
 
