@@ -2,11 +2,12 @@
 
 # from sqlalchemy import exc
 from sqlalchemy import exc
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, jsonify
 from flask_restful import Resource, Api
 from flask_api import status
 from project import db
-from project.api.models import User
+from project.api.models import User, is_admin
+from project.api.util import authenticate_restful, authenticate
 
 
 users_blueprint = Blueprint("users", __name__, template_folder="./templates")
@@ -32,10 +33,18 @@ def index():
 
 
 class UsersList(Resource):
+
+    method_decorators = {"post": [authenticate_restful]}
+
     @staticmethod
-    def post():
+    def post(resp):
         post_data = request.get_json()
         response_object = {"status": "fail", "message": "Invalid payload."}
+        if not is_admin(resp):
+            response_object[
+                "message"
+            ] = "You do not have permission to do that."
+            return response_object, status.HTTP_401_UNAUTHORIZED
         if not post_data:
             return response_object, status.HTTP_400_BAD_REQUEST
         username = post_data.get("username")

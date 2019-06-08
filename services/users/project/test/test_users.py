@@ -6,15 +6,20 @@ import unittest
 from flask_api import status
 
 from project.test.base import BaseTestCase
-from project.api.models import User
+from project.api.models import User, add_admin, add_user
 from project import db
 
 
-def add_user(username, email, password):
-    user = User(username=username, email=email, password=password)
-    db.session.add(user)
-    db.session.commit()
-    return user
+def get_header(client, as_admin):
+    create_user_func = add_admin if as_admin else add_user
+    create_user_func("test", "test@test.com", "test")
+    resp_login = client.post(
+        "/auth/login",
+        data=json.dumps({"email": "test@test.com", "password": "test"}),
+        content_type="application/json",
+    )
+    token = json.loads(resp_login.data.decode())["auth_token"]
+    return {"Authorization": f"Bearer {token}"}
 
 
 class TestUserService(BaseTestCase):
@@ -42,6 +47,7 @@ class TestUserService(BaseTestCase):
                     }
                 ),
                 content_type="application/json",
+                headers=get_header(self.client, as_admin=True),
             )
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -52,7 +58,10 @@ class TestUserService(BaseTestCase):
         """Ensure error is thrown if the JSON object is empty."""
         with self.client:
             response = self.client.post(
-                "/users", data=json.dumps({}), content_type="application/json"
+                "/users",
+                data=json.dumps({}),
+                content_type="application/json",
+                headers=get_header(self.client, as_admin=True),
             )
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -68,6 +77,7 @@ class TestUserService(BaseTestCase):
                 "/users",
                 data=json.dumps({"email": "michael@mherman.org"}),
                 content_type="application/json",
+                headers=get_header(self.client, as_admin=True),
             )
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -77,6 +87,7 @@ class TestUserService(BaseTestCase):
     def test_add_user_duplicate_email(self):
         """Ensure error is thrown if the email already exists."""
         with self.client:
+            headers = get_header(self.client, as_admin=True)
             self.client.post(
                 "/users",
                 data=json.dumps(
@@ -87,17 +98,19 @@ class TestUserService(BaseTestCase):
                     }
                 ),
                 content_type="application/json",
+                headers=headers,
             )
             response = self.client.post(
                 "/users",
                 data=json.dumps(
                     {
-                        "username": "michael",
+                        "username": "Ryan",
                         "email": "michael@mherman.org",
                         "password": "greaterthaneight",
                     }
                 ),
                 content_type="application/json",
+                headers=headers,
             )
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -128,9 +141,13 @@ class TestUserService(BaseTestCase):
             self.assertEqual(len(data["data"]["users"]), 2)
             self.assertIn("Ryan", data["data"]["users"][0]["username"])
             self.assertIn("ryan@foo.com", data["data"]["users"][0]["email"])
+            self.assertTrue(data["data"]["users"][0]["active"])
+            self.assertFalse(data["data"]["users"][0]["admin"])
             self.assertIn("Randy", data["data"]["users"][1]["username"])
             self.assertIn("randy@foo.com", data["data"]["users"][1]["email"])
             self.assertIn("success", data["status"])
+            self.assertTrue(data["data"]["users"][1]["active"])
+            self.assertFalse(data["data"]["users"][1]["admin"])
 
     def test_delete_user(self):
         """Ensure error is thrown if the email already exists."""
@@ -162,11 +179,42 @@ class TestUserService(BaseTestCase):
                     dict(username="michael", email="michael@reallynotreal.com")
                 ),
                 content_type="application/json",
+                headers=get_header(self.client, as_admin=True),
             )
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, 400)
             self.assertIn("Invalid payload.", data["message"])
             self.assertIn("fail", data["status"])
+
+    def test_add_user_inactive(self):
+        add_user("test", "test@test.com", "test")
+        # update user
+        user = User.query.filter_by(email="test@test.com").first()
+        user.active = False
+        db.session.commit()
+        with self.client:
+            resp_login = self.client.post(
+                "/auth/login",
+                data=json.dumps({"email": "test@test.com", "password": "test"}),
+                content_type="application/json",
+            )
+            token = json.loads(resp_login.data.decode())["auth_token"]
+            response = self.client.post(
+                "/users",
+                data=json.dumps(
+                    {
+                        "username": "michael",
+                        "email": "michael@sonotreal.com",
+                        "password": "test",
+                    }
+                ),
+                content_type="application/json",
+                headers={"Authorization": f"Bearer {token}"},
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data["status"] == "fail")
+            self.assertTrue(data["message"] == "Provide a valid auth token.")
+            self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     # ----------------------------------------------------------------------- #
     # test main `/` route
@@ -209,6 +257,27 @@ class TestUserService(BaseTestCase):
             self.assertIn(b"All Users", response.data)
             self.assertNotIn(b"<p>No users!</p>", response.data)
             self.assertIn(b"ryan", response.data)
+
+    def test_add_user_not_admin(self):
+        with self.client:
+            response = self.client.post(
+                "/users",
+                data=json.dumps(
+                    {
+                        "username": "michael",
+                        "email": "michael@sonotreal.com",
+                        "password": "test",
+                    }
+                ),
+                content_type="application/json",
+                headers=get_header(self.client, as_admin=False),
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data["status"] == "fail")
+            self.assertTrue(
+                data["message"] == "You do not have permission to do that."
+            )
+            self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 if __name__ == "__main__":
