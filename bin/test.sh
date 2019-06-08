@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# get the project dir
+MYPWD="command -p pwd"
+bin_dir=$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && $MYPWD)
+project_dir=$(cd -P $bin_dir/.. && $MYPWD)
+
+# set the host URL
 host=${1:-localhost}
 echo "Testing on $host"
 
@@ -22,18 +28,14 @@ inspect() {
 #docker-compose down
 
 # run e2e tests
-echo $PWD
-env
-pushd $HOME
+pushd $project_dir
 sudo find / -name docker-compose-prod.yml
 docker-compose -f docker-compose-prod.yml up -d --build
 #docker-compose -f docker-compose-prod.yml exec users python manage.py recreate_db
 #./node_modules/.bin/cypress run --config baseUrl=http://$host
 #inspect $? e2e
 #docker-compose -f docker-compose-prod.yml down
-echo $PWD
 popd
-echo $PWD
 
 # return proper code
 if [ -n "${fails}" ]; then

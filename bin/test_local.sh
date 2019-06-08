@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# get the project dir
+MYPWD="command -p pwd"
+bin_dir=$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && $MYPWD)
+project_dir=$(cd -P $bin_dir/.. && $MYPWD)
 
 fails=""
 
@@ -10,6 +14,7 @@ inspect() {
 }
 
 # run unit and integration tests
+pushd $project_dir
 docker-compose up -d --build
 docker-compose exec users python manage.py test
 inspect $? users
@@ -18,6 +23,7 @@ inspect $? users-lint
 docker-compose exec client npm run test:ci
 inspect $? client
 #docker-compose down
+popd
 
 # return proper code
 if [ -n "${fails}" ]; then
