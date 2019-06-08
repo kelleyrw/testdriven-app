@@ -5,3 +5,5 @@
 __pycache__
 env
 services/users/htmlcov
+package-lock.json
+node_modules

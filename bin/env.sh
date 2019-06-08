@@ -1,9 +1,16 @@
+MYPWD="command -p pwd"
+# get the project dir
+bin_dir=$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && $MYPWD)
+project_dir=$(cd -P $bin_dir/.. && $MYPWD)
+
 env=${1:-'local'}
+
+. ${project_dir}/../virtual_environments/testdriven/bin/activate
 
 valid=false
 if   [ "$env" = "local" ]; then
     export FLASK_APP='project/__init__.py'
-    export FLASK_ENV='development'
+    export FLASK_ENV='local'
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_dev"
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.DevelopmentConfig"
