@@ -22,6 +22,8 @@ inspect() {
 #docker-compose down
 
 # run e2e tests
+echo $PWD
+env
 pushd $HOME
 sudo find / -name docker-compose-prod.yml
 docker-compose -f docker-compose-prod.yml up -d --build
@@ -29,7 +31,9 @@ docker-compose -f docker-compose-prod.yml up -d --build
 #./node_modules/.bin/cypress run --config baseUrl=http://$host
 #inspect $? e2e
 #docker-compose -f docker-compose-prod.yml down
+echo $PWD
 popd
+echo $PWD
 
 # return proper code
 if [ -n "${fails}" ]; then
