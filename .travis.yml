@@ -15,11 +15,10 @@ before_install:
 before_script:
     - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
     - npm install
-    - pushd bin
+    - pushd ${HOME}/bin
 
 script:
     - bash test.sh
-
 
 after_script:
     - popd

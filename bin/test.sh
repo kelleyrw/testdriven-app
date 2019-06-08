@@ -17,6 +17,7 @@ inspect() {
   fi
 }
 
+
 # run unit and integration tests
 #docker-compose up -d --build
 #docker-compose exec users python manage.py test
@@ -29,7 +30,7 @@ inspect() {
 
 # run e2e tests
 pushd $project_dir
-sudo find / -name docker-compose-prod.yml
+export SECRET_KEY="my_precious"
 docker-compose -f docker-compose-prod.yml up -d --build
 #docker-compose -f docker-compose-prod.yml exec users python manage.py recreate_db
 #./node_modules/.bin/cypress run --config baseUrl=http://$host
