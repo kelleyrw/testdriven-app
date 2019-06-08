@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 class UserStatus extends Component {
@@ -45,7 +45,8 @@ class UserStatus extends Component {
             return (
                 <p>You must be logged in to view this. Click <Link to="/login">here</Link> to log back in.</p>
             )
-        };
+        }
+        ;
 
         return (
             <div>
@@ -53,6 +54,8 @@ class UserStatus extends Component {
                     <li><strong>User ID:</strong> {this.state.id}</li>
                     <li><strong>Email:</strong> {this.state.email}</li>
                     <li><strong>Username:</strong> {this.state.username}</li>
+                    <li><strong>Active:</strong> {this.state.active}</li>
+                    <li><strong>Admin:</strong> {this.state.admin}</li>
                 </ul>
             </div>
         )
