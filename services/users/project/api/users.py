@@ -1,13 +1,12 @@
 # services/users/project/api/users.py
 
-# from sqlalchemy import exc
 from sqlalchemy import exc
-from flask import Blueprint, request, render_template, jsonify
+from flask import Blueprint, request, render_template
 from flask_restful import Resource, Api
 from flask_api import status
 from project import db
 from project.api.models import User, is_admin
-from project.api.util import authenticate_restful, authenticate
+from project.api.util import authenticate_restful
 
 
 users_blueprint = Blueprint("users", __name__, template_folder="./templates")
