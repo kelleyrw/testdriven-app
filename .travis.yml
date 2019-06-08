@@ -14,13 +14,10 @@ before_install:
 
 before_script:
     - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
-#    - npm install
-#    - docker-compose up -d --build
-    - export APP_HOME=$PWD
+    - npm install
 
 script:
-    - bash $APP_HOME/bin/test.sh
+    - bash test.sh
 
 after_script:
-    - popd
     - docker-compose down
