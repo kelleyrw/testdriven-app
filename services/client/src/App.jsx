@@ -80,6 +80,7 @@ class App extends Component {
                 this.clearFormState();
                 window.localStorage.setItem('authToken', res.data.auth_token);
                 this.setState({isAuthenticated: true,});
+                this.getUsers();
             })
             .catch((err) => { console.log(err); });
     };
@@ -101,6 +102,12 @@ class App extends Component {
     logoutUser() {
         window.localStorage.clear();
         this.setState({isAuthenticated: false});
+    };
+
+    componentWillMount() {
+        if (window.localStorage.getItem('authToken')) {
+            this.setState({ isAuthenticated: true });
+        }
     };
 
     render() {
@@ -159,6 +166,6 @@ class App extends Component {
             </div>
         )
     }
-};
+}
 
 export default App;
