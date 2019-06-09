@@ -15,7 +15,7 @@ inspect() {
 
 # run unit and integration tests
 pushd $project_dir
-docker-compose up -d --build --force-recrate
+docker-compose up -d --build
 docker-compose exec users python manage.py test
 inspect $? users
 docker-compose exec users flake8 project
@@ -23,6 +23,8 @@ inspect $? users-lint
 docker-compose exec client npm run test:ci
 inspect $? client
 #docker-compose down
+inspect $? end-to-end
+./node_modules/.bin/cypress run --config baseUrl=http://$(docker-machine ip testdriven-dev)
 inspect $? "adding data"
 docker-compose exec users python manage.py recreate_db
 docker-compose exec users python manage.py seed_db
