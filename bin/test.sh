@@ -9,6 +9,8 @@ type=${1:-all}
 host=${2:-localhost:3000}
 fails=""
 
+pushd ${project_dir}
+
 echo "type = $type"
 echo "host = $host"
 
@@ -79,6 +81,8 @@ else
   echo -e "Running all tests!\n"
   all
 fi
+
+popd
 
 # return proper code
 if [ -n "${fails}" ]; then
