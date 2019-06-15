@@ -5,7 +5,9 @@ project_dir=$(cd -P $bin_dir/.. && $MYPWD)
 
 env=${1:-'local'}
 
-. ${project_dir}/../virtual_environments/testdriven/bin/activate
+#. ${project_dir}/../virtual_environments/testdriven/bin/activate
+
+pushd $project_dir
 
 valid=false
 if   [ "$env" = "local" ]; then
@@ -59,3 +61,5 @@ if $valid; then
     echo SQLALCHEMY_DATABASE_URI = $SQLALCHEMY_DATABASE_URI
     echo SECRET_KEY              = $SECRET_KEY
 fi
+
+popd
