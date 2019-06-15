@@ -5,14 +5,12 @@ MYPWD="command -p pwd"
 bin_dir=$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && $MYPWD)
 project_dir=$(cd -P $bin_dir/.. && $MYPWD)
 
-# set the host URL
-host=${1:-localhost}
-echo "Testing on $host"
-
-pushd $project_dir
-
-type=$1
+type=${1:-all}
+host=${2:-localhost:3000}
 fails=""
+
+echo "type = $type"
+echo "host = $host"
 
 inspect() {
   if [ $1 -ne 0 ]; then
@@ -27,6 +25,7 @@ server() {
   inspect $? users
   docker-compose exec users flake8 project
   inspect $? users-lint
+  docker-compose down
 }
 
 # run client-side tests
@@ -34,6 +33,19 @@ client() {
   docker-compose up -d --build
   docker-compose exec client npm run test:ci
   inspect $? client
+  docker-compose down
+}
+
+# run e2e tests
+e2e() {
+  docker-compose -f docker-compose-prod.yml up -d --build --force-recreate
+  docker-compose -f docker-compose-prod.yml exec users python manage.py recreate_db
+  cmd="./node_modules/.bin/cypress run --config baseUrl=http://${host}"
+  echo $cmd
+  eval $cmd
+
+  inspect $? e2e
+  docker-compose -f docker-compose-prod.yml down
 }
 
 # run all tests
@@ -45,46 +57,36 @@ all() {
   inspect $? users-lint
   docker-compose exec client npm run test:ci
   inspect $? client
+  docker-compose down
   e2e
-}
-
-# run e2e tests
-e2e() {
-  docker-compose up -d --build
-  docker-compose exec users python manage.py recreate_db
-  docker-compose exec users python manage.py seed_db
-  ./node_modules/.bin/cypress run --config baseUrl=http://localhost:3000
-  inspect $? e2e
 }
 
 # run appropriate tests
 if [[ "${type}" == "server" ]]; then
-  echo "\n"
-  echo "Running server-side tests!\n"
+  echo -e "\n"
+  echo -e "Running server-side tests!\n"
   server
 elif [[ "${type}" == "client" ]]; then
-  echo "\n"
-  echo "Running client-side tests!\n"
+  echo -e "\n"
+  echo -e "Running client-side tests!\n"
   client
 elif [[ "${type}" == "e2e" ]]; then
-  echo "\n"
-  echo "Running e2e tests!\n"
+  echo -e "\n"
+  echo -e "Running e2e tests!\n"
   e2e
 else
-  echo "\n"
-  echo "Running all tests!\n"
+  echo -e "\n"
+  echo -e "Running all tests!\n"
   all
 fi
 
 # return proper code
 if [ -n "${fails}" ]; then
-  echo "\n"
-  echo "Tests failed: ${fails}"
+  echo -e "\n"
+  echo -e "Tests failed: ${fails}"
   exit 1
 else
-  echo "\n"
-  echo "Tests passed!"
+  echo -e "\n"
+  echo -e "Tests passed!"
   exit 0
 fi
-
-popd

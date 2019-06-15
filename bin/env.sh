@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # get the project dir
 MYPWD="command -p pwd"
 bin_dir=$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && $MYPWD)
@@ -45,6 +47,19 @@ elif [ "$env" = "prod" ]; then
     export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
     export REACT_APP_USERS_SERVICE_URL=http://$(dm ip testdriven-prod)
     export SECRET_KEY='33d5b28fb4f6d18e7cc6450a521f335d92e890196fa8da38'
+    valid=true
+elif [ "$env" = "stage" ]; then
+    full_env="Production"
+    docker-machine env testdriven-stage
+    eval $(docker-machine env testdriven-stage)
+    export FLASK_APP='project/__init__.py'
+    export FLASK_ENV='production'
+    export DATABASE_URL="postgresql://localhost:5432/testdriven_users_stage"
+    export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
+    export APP_SETTINGS="project.config.StagingConfig"
+    export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
+    export REACT_APP_USERS_SERVICE_URL=http://$(dm ip testdriven-stage)
+    export SECRET_KEY='my_precious'
     valid=true
 else
     echo ERROR: valid values: 'test' and 'dev'
