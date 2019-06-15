@@ -18,7 +18,7 @@ before_script:
     - pushd bin
 
 script:
-    - bash test.sh all
+    - bash test_ci.sh all
 
 after_script:
     - popd
