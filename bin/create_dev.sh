@@ -15,7 +15,7 @@ inspect() {
 
 # run unit and integration tests
 pushd $project_dir
-docker-compose up -d --build
+docker-compose up -d --build --force-recreate
 docker-compose exec users python manage.py recreate_db
 docker-compose exec users python manage.py seed_db
 popd
