@@ -12,8 +12,8 @@ it('should not display user info if a user is not logged in', () => {
     cy
         .visit('/status')
         .get('p').contains('You must be logged in to view this.')
-        .get('a').contains('User Status').should('not.be.visible')
-        .get('a').contains('Log Out').should('not.be.visible')
+        .get('a').contains('User Status').should('not.exist')
+        .get('a').contains('Log Out').should('not.exist')
         .get('a').contains('Register')
         .get('a').contains('Log In');
 });
@@ -41,6 +41,6 @@ it('should display user info if a user is logged in', () => {
         .get('li').contains(username)
         .get('a').contains('User Status')
         .get('a').contains('Log Out')
-        .get('a').contains('Register').should('not.be.visible')
-        .get('a').contains('Log In').should('not.be.visible');
+        .get('a').contains('Register').should('not.exist')
+        .get('a').contains('Log In').should('not.exist');
 });
