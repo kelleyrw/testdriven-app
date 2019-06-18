@@ -5,6 +5,18 @@ services:
 
 env:
     DOCKER_COMPOSE_VERSION: 1.24.0
+    COMMIT: ${TRAVIS_COMMIT::8}
+    MAIN_REPO: https://github.com/kelleyrw/testdriven-app.git
+    USERS: test-driven-users
+    USERS_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/users
+    USERS_DB: test-driven-users_db
+    USERS_DB_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/users/project/db
+    CLIENT: test-driven-client
+    CLIENT_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/client
+    SWAGGER: test-driven-swagger
+    SWAGGER_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/swagger
+    SECRET_KEY: my_precious
+    REACT_APP_USERS_SERVICE_IP: 127.0.0.1
 
 before_install:
     - sudo rm /usr/local/bin/docker-compose
@@ -13,15 +25,14 @@ before_install:
     - sudo mv docker-compose /usr/local/bin
 
 before_script:
-    - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
-    - export SECRET_KEY=my_precious
+    - export REACT_APP_USERS_SERVICE_URL=http://${REACT_APP_USERS_SERVICE_IP}=127.0.0.1
     - npm install
     - pushd bin
     - pwd
     - ls -l
 
 script:
-    - bash test.sh all localhost
+    - bash test.sh e2e ${REACT_APP_USERS_SERVICE_IP}
 
 after_script:
     - popd
