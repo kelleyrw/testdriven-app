@@ -31,7 +31,7 @@ before_script:
     - ls -l
 
 script:
-    - bash test.sh e2e ${REACT_APP_USERS_SERVICE_IP}
+    - bash test.sh e2e ${REACT_APP_USERS_SERVICE_URL}
 
 after_script:
     - popd
