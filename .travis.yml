@@ -36,3 +36,6 @@ script:
 after_script:
     - popd
     - docker-compose down
+
+after_success:
+    - bash ./docker-push.sh
