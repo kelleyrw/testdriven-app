@@ -45,6 +45,6 @@ it('should display user info if a user is logged in', () => {
         .get('li').contains(username)
         .get('a').contains('User Status')
         .get('a').contains('Log Out')
-        .get('a').contains('Register').should('not.exist')
-        .get('a').contains('Log In').should('not.exist');
+        .get('a').contains('Register').should('not.be.visible')
+        .get('a').contains('Log In').should('not.be.visible');
 });
