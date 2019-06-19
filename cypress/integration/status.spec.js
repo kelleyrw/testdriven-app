@@ -10,8 +10,12 @@ describe('Status', () => {
 
 it('should not display user info if a user is not logged in', () => {
 
+    // cy.wait(10000);
+    // cy.server()
+    // cy.route('/logout', 200).as('logout')
+    //
     // cy.visit('/logout')
-    cy.wait(10000);
+    // cy.wait('@logout')
 
     cy
         .visit('/status')
@@ -23,6 +27,11 @@ it('should not display user info if a user is not logged in', () => {
 });
 
 it('should display user info if a user is logged in', () => {
+    // cy.server()
+    // cy.route({
+    //     url: '/register',
+    // }).as('post_register')
+
     // register user
     cy
         .visit('/register')
@@ -32,7 +41,7 @@ it('should display user info if a user is logged in', () => {
         .get('input[type="submit"]').click()
         .get('.navbar-burger').click();
 
-    cy.wait(10000);
+    cy.wait(1000);
 
     // assert '/status' is displayed properly
     cy.visit('/status');
