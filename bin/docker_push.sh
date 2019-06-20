@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# get the project dir
+MYPWD="command -p pwd"
+bin_dir=$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && $MYPWD)
+project_dir=$(cd -P $bin_dir/.. && $MYPWD)
+pushd $project_dir
+
 #export AWS_PROFILE=default
 #export AWS_DEFAULT_REGION=us-east-1
 #export AWS_ACCOUNT_ID=261175774436
@@ -19,7 +25,7 @@
 #export SECRET_KEY=my_precious
 
 echo "*****************************************************************"
-echo "running docker_push.sh
+echo "$running docker_push from ${PWD}"
 echo "*****************************************************************"
 
 if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]
@@ -61,5 +67,7 @@ then
 fi
 
 echo "*****************************************************************"
-echo "done docker_push.sh
+echo "done docker_push.sh"
 echo "*****************************************************************"
+
+popd
