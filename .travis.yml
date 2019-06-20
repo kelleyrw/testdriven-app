@@ -29,7 +29,6 @@ before_script:
 
 script:
     - echo "bash ./bin/test.sh all localhost"
-    - bash env
     - bash ./bin/docker_push.sh
 
 after_success:

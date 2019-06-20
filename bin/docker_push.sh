@@ -34,7 +34,7 @@ then
   if [ "$TRAVIS_BRANCH" == "staging" ] || \
      [ "$TRAVIS_BRANCH" == "production" ]
   then
-    mkdir -p ~/.aws/{configure,config}
+    mkdir -p ~/.aws
     echo "[default]" > ~/.aws/configure
     echo "[default]" > ~/.aws/config
 
