@@ -44,6 +44,9 @@ then
     export AWS_ACCOUNT_ID=$AWS_DEFAULT_REGION
     export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+    mkdir -p ~/.aws/{configure,config}
+    echo "[default]" > ~/.aws/configure
+    echo "[default]" > ~/.aws/config
     eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email --registry-ids $AWS_ACCOUNT_ID)
     export TAG=$TRAVIS_BRANCH
     export REPO=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/rwk
