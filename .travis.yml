@@ -28,7 +28,7 @@ before_script:
     - npm install
 
 script:
-    - bash ,/bin/test.sh all localhost
+    - bash ./bin/test.sh all localhost
     - bash ./bin/docker_push.sh
 
 after_success:
