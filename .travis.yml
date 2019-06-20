@@ -25,16 +25,14 @@ before_install:
 
 before_script:
     - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
+    - npm install
 
 script:
-    - env
-    - pwd
-    - ls -1
-    - echo "running script"
-    - bash ./bin/bogus.sh
+    - bash ,/bin/test.sh all localhost
     - bash ./bin/docker_push.sh
 
 after_success:
+    - echo "after success"
 
 after_script:
     - docker-compose down
