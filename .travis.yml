@@ -32,9 +32,9 @@ script:
     - ls -1
     - echo "running script"
     - bash ./bin/bogus.sh
+    - bash ./bin/docker_push.sh
 
 after_success:
-    - bash ./bin/docker_push.sh
 
 after_script:
     - docker-compose down
