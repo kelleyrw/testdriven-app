@@ -25,10 +25,10 @@ before_install:
 
 before_script:
     - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
-    - echo npm install
+    - npm install
 
 script:
-    - echo "bash ./bin/test.sh all localhost"
+    - bash ./bin/test.sh all localhost
     - bash ./bin/docker_push.sh
 
 after_success:
