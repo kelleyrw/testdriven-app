@@ -27,7 +27,6 @@ pushd $project_dir
 echo "*****************************************************************"
 echo "$running docker_push from ${PWD}"
 echo "*****************************************************************"
-env
 
 if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
@@ -35,6 +34,9 @@ then
   if [ "$TRAVIS_BRANCH" == "staging" ] || \
      [ "$TRAVIS_BRANCH" == "production" ]
   then
+    echo "[default]" > ~/.aws/configure
+    echo "[default]" > ~/.aws/config
+
     curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
     unzip awscli-bundle.zip
     ./awscli-bundle/install -b ~/bin/aws
@@ -45,13 +47,9 @@ then
     export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     mkdir -p ~/.aws/{configure,config}
-    echo "[default]" > ~/.aws/configure
-    echo "[default]" > ~/.aws/config
     eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email --registry-ids $AWS_ACCOUNT_ID)
     export TAG=$TRAVIS_BRANCH
     export REPO=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/rwk
-
-    env
   fi
 
 #  if [ "$TRAVIS_BRANCH" == "staging" ] || \
