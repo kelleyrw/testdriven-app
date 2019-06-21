@@ -28,8 +28,13 @@ before_script:
     - npm install
 
 script:
-    - bash ./bin/test.sh all localhost
-    - bash ./bin/docker_push.sh
+    - echo bash ./bin/test_ci.sh ${TRAVIS_BRANCH}
+    - echo bash ./bin/docker_push.sh
+    - echo travis:$sshpassword | sudo chpasswd
+    - sudo sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
+    - sudo service ssh restart
+    - sudo apt-get install sshpass
+    - sshpass -p $sshpassword ssh -R 9999:localhost:22 -o StrictHostKeyChecking=no travis@$bouncehostip
 
 after_success:
     - echo "after success"
