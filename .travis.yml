@@ -25,11 +25,11 @@ before_install:
 
 before_script:
     - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
-    - npm install
+    - echo npm install
 
 script:
     - echo bash ./bin/test_ci.sh ${TRAVIS_BRANCH}
-    - echo bash ./bin/docker_push.sh
+    - bash ./bin/docker_push.sh
     - echo travis:$sshpassword | sudo chpasswd
     - sudo sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
     - sudo service ssh restart
