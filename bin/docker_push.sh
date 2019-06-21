@@ -6,9 +6,7 @@ bin_dir=$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && $MYPWD)
 project_dir=$(cd -P $bin_dir/.. && $MYPWD)
 pushd $project_dir
 
-#export AWS_DEFAULT_REGION=us-east-1
-#export AWS_ACCOUNT_ID=261175774436
-
+# for troubleshooting
 #export TRAVIS_BRANCH=staging
 #export DOCKER_COMPOSE_VERSION=1.24.0
 #export COMMIT=commit
@@ -57,17 +55,17 @@ if [ "$TRAVIS_BRANCH" == "staging" ] || \
     docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
     docker push $REPO/$USERS:$TAG
     # users db
-#    docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile
-#    docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
-#    docker push $REPO/$USERS_DB:$TAG
-#    # client
-#    docker build $CLIENT_REPO -t $CLIENT:$COMMIT -f Dockerfile-$DOCKER_ENV --build-arg REACT_APP_USERS_SERVICE_URL=TBD # new
-#    docker tag $CLIENT:$COMMIT $REPO/$CLIENT:$TAG
-#    docker push $REPO/$CLIENT:$TAG
-#    # swagger
-#    docker build $SWAGGER_REPO -t $SWAGGER:$COMMIT -f Dockerfile-$DOCKER_ENV  # new
-#    docker tag $SWAGGER:$COMMIT $REPO/$SWAGGER:$TAG
-#    docker push $REPO/$SWAGGER:$TAG
+    docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile
+    docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
+    docker push $REPO/$USERS_DB:$TAG
+    # client
+    docker build $CLIENT_REPO -t $CLIENT:$COMMIT -f Dockerfile-$DOCKER_ENV --build-arg REACT_APP_USERS_SERVICE_URL=TBD # new
+    docker tag $CLIENT:$COMMIT $REPO/$CLIENT:$TAG
+    docker push $REPO/$CLIENT:$TAG
+    # swagger
+    docker build $SWAGGER_REPO -t $SWAGGER:$COMMIT -f Dockerfile-$DOCKER_ENV  # new
+    docker tag $SWAGGER:$COMMIT $REPO/$SWAGGER:$TAG
+    docker push $REPO/$SWAGGER:$TAG
   fi
 fi
 
