@@ -7,19 +7,21 @@ project_dir=$(cd -P $bin_dir/.. && $MYPWD)
 pushd $project_dir
 
 # for troubleshooting
-#export TRAVIS_BRANCH=staging
-#export DOCKER_COMPOSE_VERSION=1.24.0
-#export COMMIT=commit
-#export MAIN_REPO=https://github.com/kelleyrw/testdriven-app.git
-#export USERS=test-driven-users
-#export USERS_REPO=${MAIN_REPO}#${TRAVIS_BRANCH}:services/users
-#export USERS_DB=test-driven-users_db
-#export USERS_DB_REPO=${MAIN_REPO}#${TRAVIS_BRANCH}:services/users/project/db
-#export CLIENT=test-driven-client
-#export CLIENT_REPO=${MAIN_REPO}#${TRAVIS_BRANCH}:services/client
-#export SWAGGER=test-driven-swagger
-#export SWAGGER_REPO=${MAIN_REPO}#${TRAVIS_BRANCH}:services/swagger
-#export SECRET_KEY=my_precious
+if [[ "$1" == "local" ]]; then
+    export TRAVIS_BRANCH=staging
+    export DOCKER_COMPOSE_VERSION=1.24.0
+    export COMMIT=commit
+    export MAIN_REPO=https://github.com/kelleyrw/testdriven-app.git
+    export USERS=test-driven-users
+    export USERS_REPO=${MAIN_REPO}#${TRAVIS_BRANCH}:services/users
+    export USERS_DB=test-driven-users_db
+    export USERS_DB_REPO=${MAIN_REPO}#${TRAVIS_BRANCH}:services/users/project/db
+    export CLIENT=test-driven-client
+    export CLIENT_REPO=${MAIN_REPO}#${TRAVIS_BRANCH}:services/client
+    export SWAGGER=test-driven-swagger
+    export SWAGGER_REPO=${MAIN_REPO}#${TRAVIS_BRANCH}:services/swagger
+    export SECRET_KEY=my_precious
+fi
 
 echo "*****************************************************************"
 echo "$running docker_push from ${PWD}"
