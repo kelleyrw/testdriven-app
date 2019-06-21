@@ -41,6 +41,7 @@ then
     unzip awscli-bundle.zip
     ./awscli-bundle/install -b ~/bin/aws
     export PATH=~/bin:$PATH
+
     # add AWS_ACCOUNT_ID, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY env vars via TravisCI
     eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email --registry-ids $AWS_ACCOUNT_ID)
     export TAG=$TRAVIS_BRANCH
