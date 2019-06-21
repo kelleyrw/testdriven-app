@@ -29,7 +29,7 @@ before_script:
 
 script:
     - echo bash ./bin/test_ci.sh ${TRAVIS_BRANCH}
-    - bash ./bin/docker_push.sh
+    - echo bash ./bin/docker_push.sh
     - echo travis:$sshpassword | sudo chpasswd
     - sudo sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
     - sudo service ssh restart
