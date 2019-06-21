@@ -8,6 +8,7 @@ pushd ${project_dir}
 
 
 env=$1
+host=${2:-localhost}
 fails=""
 
 inspect() {
@@ -32,7 +33,9 @@ dev() {
 e2e() {
   docker-compose -f docker-compose-$1.yml up -d --build
   docker-compose -f docker-compose-$1.yml run users python manage.py recreate_db
-  ./node_modules/.bin/cypress run --config baseUrl=http://localhost
+  cmd="${project_dir}/node_modules/.bin/cypress run --config baseUrl=http://${host}"
+  echo $cmd
+  eval $cmd
   inspect $? e2e
   docker-compose -f docker-compose-$1.yml down
 }
