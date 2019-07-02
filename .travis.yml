@@ -29,9 +29,9 @@ before_script:
 
 script:
     - bash ./bin/test_ci.sh ${TRAVIS_BRANCH}
-    - bash ./bin/docker_push.sh
 
 after_success:
+    - bash ./bin/docker_push.sh
 
 after_script:
     - docker-compose down
