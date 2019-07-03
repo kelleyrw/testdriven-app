@@ -35,6 +35,7 @@ then
     export REACT_APP_USERS_SERVICE_URL="http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com"
   elif [[ "$TRAVIS_BRANCH" == "production" ]]; then
     export DOCKER_ENV=prod
+    export REACT_APP_USERS_SERVICE_URL="http://testdriven-production-alb-1817861519.us-east-1.elb.amazonaws.com"
   fi
 
   if [ "$TRAVIS_BRANCH" == "staging" ] || \
@@ -61,11 +62,16 @@ if [ "$TRAVIS_BRANCH" == "staging" ] || \
     docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
     docker pull $REPO/$USERS:$TAG
     docker push $REPO/$USERS:$TAG
-    # users db
-    docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile --no-cache
-    docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
-    docker pull $REPO/$USERS_DB:$TAG
-    docker push $REPO/$USERS_DB:$TAG
+
+    if [ "$TRAVIS_BRANCH" == "staging" ]
+    then
+        # users db
+        docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile --no-cache
+        docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
+        docker pull $REPO/$USERS_DB:$TAG
+        docker push $REPO/$USERS_DB:$TAG
+    fi
+
     # client
     docker build $CLIENT_REPO \
         -t $CLIENT:$COMMIT -f Dockerfile-$DOCKER_ENV \
