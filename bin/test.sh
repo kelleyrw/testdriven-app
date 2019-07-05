@@ -6,7 +6,7 @@ bin_dir=$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && $MYPWD)
 project_dir=$(cd -P $bin_dir/.. && $MYPWD)
 
 type=${1:-all}
-host=${2:-localhost:3000}
+host=${2:-localhost}
 fails=""
 
 pushd ${project_dir}

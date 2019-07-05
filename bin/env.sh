@@ -13,6 +13,8 @@ pushd $project_dir
 
 valid=false
 if   [ "$env" = "local" ]; then
+    docker-machine env -u
+    eval $(docker-machine env -u)
     export FLASK_APP='project/__init__.py'
     export FLASK_ENV='local'
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_dev"
@@ -68,13 +70,15 @@ fi
 
 if $valid; then
 
-    echo FLASK_APP               = $FLASK_APP
-    echo FLASK_ENV               = $FLASK_ENV
-    echo DATABASE_URL            = $DATABASE_URL
-    echo DATABASE_TEST_URL       = $DATABASE_TEST_URL
-    echo APP_SETTINGS            = $APP_SETTINGS
-    echo SQLALCHEMY_DATABASE_URI = $SQLALCHEMY_DATABASE_URI
-    echo SECRET_KEY              = $SECRET_KEY
+    echo FLASK_APP                   = $FLASK_APP
+    echo FLASK_ENV                   = $FLASK_ENV
+    echo DATABASE_URL                = $DATABASE_URL
+    echo DATABASE_TEST_URL           = $DATABASE_TEST_URL
+    echo APP_SETTINGS                = $APP_SETTINGS
+    echo SQLALCHEMY_DATABASE_URI     = $SQLALCHEMY_DATABASE_URI
+    echo SECRET_KEY                  = $SECRET_KEY
+    echo REACT_APP_USERS_SERVICE_URL = $REACT_APP_USERS_SERVICE_URL
+
 fi
 
 popd
