@@ -37,6 +37,7 @@ e2e() {
   echo $cmd
   eval $cmd
   inspect $? e2e
+  docker-compose -f docker-compose-stage.yml down
   docker-compose -f docker-compose-$1.yml down
 }
 

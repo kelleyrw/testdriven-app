@@ -2,7 +2,7 @@
     "containerDefinitions": [
         {
             "name": "client",
-            "image": "%s.dkr.ecr.us-east-1.amazonaws.com/rwk/test-driven-client:staging",
+            "image": "%s.dkr.ecr.us-east-1.amazonaws.com/test-driven-client:production",
             "essential": true,
             "memoryReservation": 300,
             "portMappings": [
@@ -15,11 +15,11 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "testdriven-client-stage",
+                    "awslogs-group": "testdriven-client-prod",
                     "awslogs-region": "us-east-1"
                 }
             }
         }
     ],
-    "family": "testdriven-client-stage-td"
+    "family": "testdriven-client-prod-td"
 }

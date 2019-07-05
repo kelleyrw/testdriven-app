@@ -8,7 +8,7 @@ pushd $project_dir
 
 # for troubleshooting
 if [[ "$1" == "local" ]]; then
-    export TRAVIS_BRANCH=staging
+    export TRAVIS_BRANCH=production
     export DOCKER_COMPOSE_VERSION=1.24.0
     export COMMIT=commit
     export MAIN_REPO=https://github.com/kelleyrw/testdriven-app.git
@@ -36,6 +36,8 @@ then
   elif [[ "$TRAVIS_BRANCH" == "production" ]]; then
     export DOCKER_ENV=prod
     export REACT_APP_USERS_SERVICE_URL="http://testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com"
+    export DATABASE_URL="$AWS_RDS_URI"
+    export SECRET_KEY="$PRODUCTION_SECRET_KEY"
   fi
 
   if [ "$TRAVIS_BRANCH" == "staging" ] || \
@@ -56,16 +58,16 @@ then
 
 if [ "$TRAVIS_BRANCH" == "staging" ] || \
    [ "$TRAVIS_BRANCH" == "production" ]
-  then
+then
     # users
     docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV --no-cache
     docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
     docker pull $REPO/$USERS:$TAG
     docker push $REPO/$USERS:$TAG
 
+    # users db
     if [ "$TRAVIS_BRANCH" == "staging" ]
     then
-        # users db
         docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile --no-cache
         docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
         docker pull $REPO/$USERS_DB:$TAG
@@ -79,6 +81,7 @@ if [ "$TRAVIS_BRANCH" == "staging" ] || \
     docker tag $CLIENT:$COMMIT $REPO/$CLIENT:$TAG
     docker pull $REPO/$CLIENT:$TAG
     docker push $REPO/$CLIENT:$TAG
+
     # swagger
     docker build $SWAGGER_REPO -t $SWAGGER:$COMMIT -f Dockerfile-$DOCKER_ENV
     docker tag $SWAGGER:$COMMIT $REPO/$SWAGGER:$TAG

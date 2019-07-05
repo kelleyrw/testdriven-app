@@ -33,6 +33,7 @@ script:
 after_success:
     - bash ./bin/docker_push.sh
     - bash ./bin/docker_deploy_stage.sh
+    - bash ./bin/docker_deploy_prod.sh
 
 after_script:
     - docker-compose down
