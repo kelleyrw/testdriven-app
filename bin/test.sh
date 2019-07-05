@@ -40,15 +40,15 @@ client() {
 
 # run e2e tests
 e2e() {
-  docker-compose -f ${project_dir}/docker-compose-prod.yml up -d --build --force-recreate
-  docker-compose -f ${project_dir}/docker-compose-prod.yml exec users python manage.py recreate_db
+  docker-compose -f ${project_dir}/docker-compose-stage.yml up -d --build
+  docker-compose -f ${project_dir}/docker-compose-stage.yml exec users python manage.py recreate_db
 #  cmd="${project_dir}/node_modules/.bin/cypress run --config baseUrl=http://${host} --spec ${project_dir}/cypress/integration/status.spec.js"
   cmd="${project_dir}/node_modules/.bin/cypress run --config baseUrl=http://${host}"
   echo $cmd
   eval $cmd
 
   inspect $? e2e
-  docker-compose -f ${project_dir}/docker-compose-prod.yml down
+  docker-compose -f ${project_dir}/docker-compose-stage.yml down
 }
 
 # run all tests
