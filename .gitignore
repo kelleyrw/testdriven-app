@@ -5,7 +5,7 @@
 __pycache__
 env
 services/users/htmlcov
-services/services/htmlcov
+services/exercises/htmlcov/
 package-lock.json
 node_modules
 .python-version
