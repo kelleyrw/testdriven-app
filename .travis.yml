@@ -30,7 +30,7 @@ before_install:
 before_script:
     - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
     - export REACT_APP_EXERCISES_SERVICE_URL=http://127.0.0.1
-    - export REACT_APP_API_GATEWAY_URL=https://{API_GATEWAY_URL}
+    - export REACT_APP_API_GATEWAY_URL=https://${API_GATEWAY_URL}
     - npm install
 
 script:
