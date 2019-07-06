@@ -23,6 +23,7 @@ if   [ "$env" = "local" ]; then
     export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
     export REACT_APP_USERS_SERVICE_URL=http://localhost
     export SECRET_KEY='my_precious'
+    export AWS_EXECUTE_GW=http://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
     valid=true
 elif [ "$env" = "dev" ]; then
     full_env="Development"
@@ -36,6 +37,7 @@ elif [ "$env" = "dev" ]; then
     export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
     export REACT_APP_USERS_SERVICE_URL=http://$(dm ip testdriven-dev)
     export SECRET_KEY='my_precious'
+    export AWS_EXECUTE_GW=http://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
     valid=true
 elif [ "$env" = "prod" ]; then
     full_env="Production"
@@ -49,6 +51,7 @@ elif [ "$env" = "prod" ]; then
     export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
     export REACT_APP_USERS_SERVICE_URL=http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com
     export SECRET_KEY='33d5b28fb4f6d18e7cc6450a521f335d92e890196fa8da38'
+    export AWS_EXECUTE_GW=http://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
     valid=true
 elif [ "$env" = "stage" ]; then
     full_env="Production"
@@ -62,6 +65,7 @@ elif [ "$env" = "stage" ]; then
     export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
     export REACT_APP_USERS_SERVICE_URL=http://testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com
     export SECRET_KEY='my_precious'
+    export AWS_EXECUTE_GW=http://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
     valid=true
 else
     echo ERROR: valid values: 'test' and 'dev'
@@ -78,6 +82,7 @@ if $valid; then
     echo SQLALCHEMY_DATABASE_URI     = $SQLALCHEMY_DATABASE_URI
     echo SECRET_KEY                  = $SECRET_KEY
     echo REACT_APP_USERS_SERVICE_URL = $REACT_APP_USERS_SERVICE_URL
+    echo AWS_EXECUTE_GW              = $AWS_EXECUTE_GW
 
 fi
 
