@@ -2,8 +2,8 @@ flask==1.0.2
 flask-sqlalchemy==2.3.2
 flask-api==1.1
 request==2019.4.13
-psycopg2==v2.7.7
-psycopg2-binary==v2.7.7
+requests==2.21.0
+psycopg2-binary==v2.8.3
 flask-testing==0.7.1
 flask-restful==0.3.7
 sqlalchemy==1.2.14
