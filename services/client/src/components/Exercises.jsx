@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-
 import AceEditor from 'react-ace';
-import axios from 'axios';
 import 'brace/mode/python';
 import 'brace/theme/solarized_dark';
+import axios from 'axios';
 
 class Exercises extends Component {
     constructor(props) {
@@ -16,7 +15,7 @@ class Exercises extends Component {
                 showGrading: false,
                 showCorrect: false,
                 showIncorrect: false,
-            }
+            },
         };
         this.onChange = this.onChange.bind(this);
         this.submitExercise = this.submitExercise.bind(this);
@@ -27,25 +26,9 @@ class Exercises extends Component {
     };
 
     getExercises() {
-        const exercises = [
-            {
-                id: 0,
-                body: `Define a function called sum that takes
-      two integers as arguments and returns their sum.`
-            },
-            {
-                id: 1,
-                body: `Define a function called reverse that takes a string
-      as an argument and returns the string in reversed order.`
-            },
-            {
-                id: 2,
-                body: `Define a function called factorial that takes a random
-      number as an argument and then returns the factorial of that
-      given number.`,
-            }
-        ];
-        this.setState({exercises: exercises});
+        axios.get(`${process.env.REACT_APP_EXERCISES_SERVICE_URL}/exercises`)
+            .then((res) => {this.setState({exercises: res.data.data.exercises});})
+            .catch((err) => { console.log(err); });
     };
 
     onChange(value) {
@@ -69,7 +52,9 @@ class Exercises extends Component {
                 newState.showGrading = false
                 newState.button.isDisabled = false
                 if (res.data) { newState.showCorrect = true }
+                ;
                 if (!res.data) { newState.showIncorrect = true }
+                ;
                 this.setState(newState);
             })
             .catch((err) => {
@@ -104,13 +89,13 @@ class Exercises extends Component {
                          showGutter={true}
                          highlightActiveLine={true}
                          value={this.state.editor.value}
-                         onChange={this.onChange}
                          style={{
                              marginBottom: '10px'
                          }}
                          editorProps={{
                              $blockScrolling: Infinity
                          }}
+                         onChange={this.onChange}
                      />
                      {this.props.isAuthenticated &&
                       <div>
@@ -146,13 +131,12 @@ class Exercises extends Component {
                           }
                       </div>
                      }
-
                      <br/><br/>
                  </div>
                 }
             </div>
         )
     };
-}
+};
 
 export default Exercises;

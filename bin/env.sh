@@ -21,6 +21,7 @@ if   [ "$env" = "local" ]; then
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.DevelopmentConfig"
     export REACT_APP_USERS_SERVICE_URL=http://localhost
+    export REACT_APP_EXERCISES_SERVICE_URL=http://localhost
     export SECRET_KEY='my_precious'
     valid=true
 elif [ "$env" = "dev" ]; then
@@ -33,6 +34,7 @@ elif [ "$env" = "dev" ]; then
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.DevelopmentConfig"
     export REACT_APP_USERS_SERVICE_URL=http://$(dm ip testdriven-dev)
+    export REACT_APP_EXERCISES_SERVICE_URL=http://$(dm ip testdriven-dev)
     export SECRET_KEY='my_precious'
     valid=true
 elif [ "$env" = "prod" ]; then
@@ -71,16 +73,17 @@ export REACT_APP_API_GATEWAY_URL=https://${API_GATEWAY_URL}
 
 if $valid; then
 
-    echo "FLASK_APP                   = $FLASK_APP"
-    echo "FLASK_ENV                   = $FLASK_ENV"
-    echo "DATABASE_URL                = $DATABASE_URL"
-    echo "DATABASE_TEST_URL           = $DATABASE_TEST_URL"
-    echo "APP_SETTINGS                = $APP_SETTINGS"
-    echo "SQLALCHEMY_DATABASE_URI     = $SQLALCHEMY_DATABASE_URI"
-    echo "SECRET_KEY                  = $SECRET_KEY"
-    echo "API_GATEWAY_URL             = $API_GATEWAY_URL"
-    echo "REACT_APP_API_GATEWAY_URL   = $REACT_APP_API_GATEWAY_URL"
-
+    echo "FLASK_APP                       = $FLASK_APP"
+    echo "FLASK_ENV                       = $FLASK_ENV"
+    echo "DATABASE_URL                    = $DATABASE_URL"
+    echo "DATABASE_TEST_URL               = $DATABASE_TEST_URL"
+    echo "APP_SETTINGS                    = $APP_SETTINGS"
+    echo "SQLALCHEMY_DATABASE_URI         = $SQLALCHEMY_DATABASE_URI"
+    echo "SECRET_KEY                      = $SECRET_KEY"
+    echo "API_GATEWAY_URL                 = $API_GATEWAY_URL"
+    echo "REACT_APP_API_GATEWAY_URL       = $REACT_APP_API_GATEWAY_URL"
+    echo "REACT_APP_USERS_SERVICE_URL     = $REACT_APP_USERS_SERVICE_URL"
+    echo "REACT_APP_EXERCISES_SERVICE_URL = $REACT_APP_EXERCISES_SERVICE_URL"
 fi
 
 popd
