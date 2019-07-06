@@ -80,7 +80,7 @@ then
     docker build $SWAGGER_REPO -t $SWAGGER:$COMMIT -f Dockerfile-$DOCKER_ENV
     docker tag $SWAGGER:$COMMIT $REPO/$SWAGGER:$TAG
     docker push $REPO/$SWAGGER:$TAG
-     exercises
+    # exercises
     docker build $EXERCISES_REPO -t $EXERCISES:$COMMIT -f Dockerfile-$DOCKER_ENV  # new
     docker tag $EXERCISES:$COMMIT $REPO/$EXERCISES:$TAG
     docker push $REPO/$EXERCISES:$TAG
