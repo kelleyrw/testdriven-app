@@ -1,5 +1,5 @@
 # base image
-FROM python:3.7.2-slim
+FROM python:3.7.3-slim
 
 # install netcat
 RUN apt-get update && \

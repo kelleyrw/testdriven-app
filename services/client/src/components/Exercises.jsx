@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import AceEditor from 'react-ace';
+import axios from 'axios';
 import 'brace/mode/python';
 import 'brace/theme/solarized_dark';
 
@@ -10,8 +11,12 @@ class Exercises extends Component {
         this.state = {
             exercises: [],
             editor: {
-                value: '# Enter your code here.'
-            },
+                value: '# Enter your code here.',
+                button: {isDisabled: false,},
+                showGrading: false,
+                showCorrect: false,
+                showIncorrect: false,
+            }
         };
         this.onChange = this.onChange.bind(this);
         this.submitExercise = this.submitExercise.bind(this);
@@ -44,23 +49,42 @@ class Exercises extends Component {
     };
 
     onChange(value) {
-        this.setState({
-            editor: {
-                value: value
-            }
-        });
+        const newState = this.state.editor;
+        newState.value = value;
+        this.setState(newState);
     };
 
     submitExercise(event) {
         event.preventDefault();
-        console.log(this.state.editor.value);
+        const newState = this.state.editor;
+        newState.showGrading = true;
+        newState.showCorrect = false;
+        newState.showIncorrect = false;
+        newState.button.isDisabled = true;
+        this.setState(newState);
+        const data = {answer: this.state.editor.value};
+        const url = process.env.REACT_APP_API_GATEWAY_URL;
+        axios.post(url, data)
+            .then((res) => {
+                newState.showGrading = false
+                newState.button.isDisabled = false
+                if (res.data) { newState.showCorrect = true }
+                if (!res.data) { newState.showIncorrect = true }
+                this.setState(newState);
+            })
+            .catch((err) => {
+                newState.showGrading = false
+                newState.button.isDisabled = false
+                console.log(err);
+            });
     };
 
     render() {
         return (
             <div>
                 <h1 className="title is-1">Exercises</h1>
-                <hr/><br/>
+                <hr/>
+                <br/>
                 {!this.props.isAuthenticated &&
                  <div className="notification is-warning">
                      <span>Please log in to submit an exercise.</span>
@@ -89,8 +113,40 @@ class Exercises extends Component {
                          }}
                      />
                      {this.props.isAuthenticated &&
-                      <button className="button is-primary" onClick={this.submitExercise}>Run Code</button>
+                      <div>
+                          <button
+                              className="button is-primary"
+                              onClick={this.submitExercise}
+                              disabled={this.state.editor.button.isDisabled}
+                          >Run Code
+                          </button>
+                          {this.state.editor.showGrading &&
+                           <h5 className="title is-5">
+                      <span className="icon is-large">
+                        <i className="fas fa-spinner fa-pulse"></i>
+                      </span>
+                               <span className="grade-text">Grading...</span>
+                           </h5>
+                          }
+                          {this.state.editor.showCorrect &&
+                           <h5 className="title is-5">
+                      <span className="icon is-large">
+                        <i className="fas fa-check"></i>
+                      </span>
+                               <span className="grade-text">Correct!</span>
+                           </h5>
+                          }
+                          {this.state.editor.showIncorrect &&
+                           <h5 className="title is-5">
+                      <span className="icon is-large">
+                        <i className="fas fa-times"></i>
+                      </span>
+                               <span className="grade-text">Incorrect!</span>
+                           </h5>
+                          }
+                      </div>
                      }
+
                      <br/><br/>
                  </div>
                 }

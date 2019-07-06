@@ -20,10 +20,8 @@ if   [ "$env" = "local" ]; then
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_dev"
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.DevelopmentConfig"
-    export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
     export REACT_APP_USERS_SERVICE_URL=http://localhost
     export SECRET_KEY='my_precious'
-    export AWS_EXECUTE_GW=http://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
     valid=true
 elif [ "$env" = "dev" ]; then
     full_env="Development"
@@ -34,10 +32,8 @@ elif [ "$env" = "dev" ]; then
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_dev"
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.DevelopmentConfig"
-    export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
     export REACT_APP_USERS_SERVICE_URL=http://$(dm ip testdriven-dev)
     export SECRET_KEY='my_precious'
-    export AWS_EXECUTE_GW=http://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
     valid=true
 elif [ "$env" = "prod" ]; then
     full_env="Production"
@@ -48,10 +44,8 @@ elif [ "$env" = "prod" ]; then
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_prod"
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.ProductionConfig"
-    export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
     export REACT_APP_USERS_SERVICE_URL=http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com
     export SECRET_KEY='33d5b28fb4f6d18e7cc6450a521f335d92e890196fa8da38'
-    export AWS_EXECUTE_GW=http://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
     valid=true
 elif [ "$env" = "stage" ]; then
     full_env="Production"
@@ -62,27 +56,30 @@ elif [ "$env" = "stage" ]; then
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_stage"
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.StagingConfig"
-    export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
     export REACT_APP_USERS_SERVICE_URL=http://testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com
     export SECRET_KEY='my_precious'
-    export AWS_EXECUTE_GW=http://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
     valid=true
 else
     echo ERROR: valid values: 'test' and 'dev'
     valid=false
 fi
 
+# global
+export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
+export API_GATEWAY_URL=rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
+export REACT_APP_API_GATEWAY_URL=https://${API_GATEWAY_URL}
+
 if $valid; then
 
-    echo FLASK_APP                   = $FLASK_APP
-    echo FLASK_ENV                   = $FLASK_ENV
-    echo DATABASE_URL                = $DATABASE_URL
-    echo DATABASE_TEST_URL           = $DATABASE_TEST_URL
-    echo APP_SETTINGS                = $APP_SETTINGS
-    echo SQLALCHEMY_DATABASE_URI     = $SQLALCHEMY_DATABASE_URI
-    echo SECRET_KEY                  = $SECRET_KEY
-    echo REACT_APP_USERS_SERVICE_URL = $REACT_APP_USERS_SERVICE_URL
-    echo AWS_EXECUTE_GW              = $AWS_EXECUTE_GW
+    echo "FLASK_APP                   = $FLASK_APP"
+    echo "FLASK_ENV                   = $FLASK_ENV"
+    echo "DATABASE_URL                = $DATABASE_URL"
+    echo "DATABASE_TEST_URL           = $DATABASE_TEST_URL"
+    echo "APP_SETTINGS                = $APP_SETTINGS"
+    echo "SQLALCHEMY_DATABASE_URI     = $SQLALCHEMY_DATABASE_URI"
+    echo "SECRET_KEY                  = $SECRET_KEY"
+    echo "API_GATEWAY_URL             = $API_GATEWAY_URL"
+    echo "REACT_APP_API_GATEWAY_URL   = $REACT_APP_API_GATEWAY_URL"
 
 fi
 
