@@ -22,6 +22,7 @@ if   [ "$env" = "local" ]; then
     export APP_SETTINGS="project.config.DevelopmentConfig"
     export REACT_APP_USERS_SERVICE_URL=http://localhost
     export REACT_APP_EXERCISES_SERVICE_URL=http://localhost
+    export LOAD_BALANCER_STAGE_DNS_NAME=localhost
     export SECRET_KEY='my_precious'
     valid=true
 elif [ "$env" = "dev" ]; then
@@ -35,6 +36,20 @@ elif [ "$env" = "dev" ]; then
     export APP_SETTINGS="project.config.DevelopmentConfig"
     export REACT_APP_USERS_SERVICE_URL=http://$(dm ip testdriven-dev)
     export REACT_APP_EXERCISES_SERVICE_URL=http://$(dm ip testdriven-dev)
+    export LOAD_BALANCER_STAGE_DNS_NAME=$(dm ip testdriven-dev)
+    export SECRET_KEY='my_precious'
+    valid=true
+elif [ "$env" = "stage" ]; then
+    full_env="Production"
+    docker-machine env testdriven-stage
+    eval $(docker-machine env testdriven-stage)
+    export FLASK_APP='project/__init__.py'
+    export FLASK_ENV='production'
+    export DATABASE_URL="postgresql://localhost:5432/testdriven_users_stage"
+    export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
+    export APP_SETTINGS="project.config.StagingConfig"
+    export REACT_APP_USERS_SERVICE_URL=http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com
+    export LOAD_BALANCER_STAGE_DNS_NAME=testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com
     export SECRET_KEY='my_precious'
     valid=true
 elif [ "$env" = "prod" ]; then
@@ -46,20 +61,9 @@ elif [ "$env" = "prod" ]; then
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_prod"
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.ProductionConfig"
-    export REACT_APP_USERS_SERVICE_URL=http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com
-    export SECRET_KEY='33d5b28fb4f6d18e7cc6450a521f335d92e890196fa8da38'
-    valid=true
-elif [ "$env" = "stage" ]; then
-    full_env="Production"
-    docker-machine env testdriven-stage
-    eval $(docker-machine env testdriven-stage)
-    export FLASK_APP='project/__init__.py'
-    export FLASK_ENV='production'
-    export DATABASE_URL="postgresql://localhost:5432/testdriven_users_stage"
-    export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
-    export APP_SETTINGS="project.config.StagingConfig"
     export REACT_APP_USERS_SERVICE_URL=http://testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com
-    export SECRET_KEY='my_precious'
+    export LOAD_BALANCER_STAGE_DNS_NAME=testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com
+    export SECRET_KEY='33d5b28fb4f6d18e7cc6450a521f335d92e890196fa8da38'
     valid=true
 else
     echo ERROR: valid values: 'test' and 'dev'
@@ -84,6 +88,7 @@ if $valid; then
     echo "REACT_APP_API_GATEWAY_URL       = $REACT_APP_API_GATEWAY_URL"
     echo "REACT_APP_USERS_SERVICE_URL     = $REACT_APP_USERS_SERVICE_URL"
     echo "REACT_APP_EXERCISES_SERVICE_URL = $REACT_APP_EXERCISES_SERVICE_URL"
+    echo "LOAD_BALANCER_STAGE_DNS_NAME    = $LOAD_BALANCER_STAGE_DNS_NAME"
 fi
 
 popd

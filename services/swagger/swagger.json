@@ -87,5 +87,10 @@
             "user"      : {"properties" : {"email" : {"type" : "string"}, "password" : {"type" : "string"}}}
         }
     },
-    "servers"    : [{"url" : "http://localhost"}]
+    "servers"    : [
+        {"url" : "http://localhost"},
+        {"url" : "http://192.168.99.103"},
+        {"url" : "http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com"},
+        {"url" : "http://testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com"}
+    ]
 }
