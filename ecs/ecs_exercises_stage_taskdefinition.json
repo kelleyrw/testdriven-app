@@ -24,6 +24,10 @@
                 {
                     "name": "DATABASE_URL",
                     "value": "postgres://postgres:postgres@exercises-db:5432/exercises_stage"
+                },
+                {
+                    "name": "SECRET_KEY",
+                    "value": "my_precious"
                 }
             ],
             "links": [
