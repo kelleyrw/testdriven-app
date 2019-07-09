@@ -75,6 +75,12 @@ export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
 export API_GATEWAY_URL=rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
 export REACT_APP_API_GATEWAY_URL=https://${API_GATEWAY_URL}
 
+function ping_lambda {
+    local cmd=" curl -H \"Content-Type: application/json\" -X POST -d '{\"answer\":\"def sum(x,y):\n    return x+y\"}' https://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute; echo"
+    echo $cmd
+    eval $cmd
+}
+
 if $valid; then
 
     echo "FLASK_APP                       = $FLASK_APP"
