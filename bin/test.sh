@@ -46,7 +46,9 @@ client() {
 e2e() {
   docker-compose -f ${project_dir}/docker-compose-stage.yml up -d --build
   docker-compose -f ${project_dir}/docker-compose-stage.yml exec users python manage.py recreate_db
-  cmd="${project_dir}/node_modules/.bin/cypress run --config baseUrl=http://${host} --env REACT_APP_API_GATEWAY_URL=${REACT_APP_API_GATEWAY_URL},LOAD_BALANCER_STAGE_DNS_NAME=http://{host}"
+  docker-compose -f ${project_dir}/docker-compose-stage.yml exec exercises python manage.py recreate_db
+  docker-compose -f ${project_dir}/docker-compose-stage.yml exec exercises python manage.py seed_db
+  cmd="${project_dir}/node_modules/.bin/cypress run --config baseUrl=http://${host} --env REACT_APP_API_GATEWAY_URL=${REACT_APP_API_GATEWAY_URL},LOAD_BALANCER_STAGE_DNS_NAME=${host}"
   echo $cmd
   eval $cmd
 
