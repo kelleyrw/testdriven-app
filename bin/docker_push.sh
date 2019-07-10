@@ -8,7 +8,13 @@ pushd $project_dir
 
 # for troubleshooting
 if [[ "$1" == "local" ]]; then
-    export TRAVIS_BRANCH=production
+    export TRAVIS_BRANCH=$2
+    if [ "$TRAVIS_BRANCH" != "staging" ] && [ "$TRAVIS_BRANCH" != "production" ]
+    then
+        echo "$TRAVIS_BRANCH must be \"staging\" or \"production\""
+        exit 1
+    fi
+
     export DOCKER_COMPOSE_VERSION=1.24.0
     export COMMIT=commit
     export MAIN_REPO=https://github.com/kelleyrw/testdriven-app.git

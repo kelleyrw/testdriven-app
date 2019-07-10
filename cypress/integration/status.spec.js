@@ -9,14 +9,6 @@ describe('Status', () => {
 });
 
 it('should not display user info if a user is not logged in', () => {
-
-    // cy.wait(10000);
-    // cy.server()
-    // cy.route('/logout', 200).as('logout')
-    //
-    // cy.visit('/logout')
-    // cy.wait('@logout')
-
     cy
         .visit('/status')
         .get('p').contains('You must be logged in to view this.')
