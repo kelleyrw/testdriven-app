@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const NavBar = (props) => (
     // eslint-disable-next-line
@@ -26,18 +26,17 @@ const NavBar = (props) => (
                     {props.isAuthenticated &&
                      <Link to="/status" className="navbar-item">User Status</Link>
                     }
+                    <Link to="/all-users" className="navbar-item">Users</Link>
                     <a href="/swagger" className="navbar-item">Swagger</a>
                 </div>
                 <div className="navbar-end">
-                    {/* new */}
                     {!props.isAuthenticated &&
-                     <Link to="/register" className="navbar-item">Register</Link>
+                     <div className="navbar-item">
+                         <Link to="/register" className="button is-primary">Register</Link>
+                         &nbsp;
+                         <Link to="/login" className="button is-link">Log In</Link>
+                     </div>
                     }
-                    {/* new */}
-                    {!props.isAuthenticated &&
-                     <Link to="/login" className="navbar-item">Log In</Link>
-                    }
-                    {/* new */}
                     {props.isAuthenticated &&
                      <Link to="/logout" className="navbar-item">Log Out</Link>
                     }

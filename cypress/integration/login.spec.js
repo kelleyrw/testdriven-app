@@ -39,17 +39,21 @@ it('should allow a user to sign in', () => {
         .get('input[name="email"]').type(email)
         .get('input[name="password"]').type(password)
         .get('input[type="submit"]').click()
-        .wait(100);
+        .wait(300);
 
     // assert user is redirected to '/'
-    // assert '/' is displayed properly
+    cy.get('.notification.is-success').contains('Welcome!');
+    cy.contains('Users').click();
+    // assert '/all-users' is displayed properly
+    cy.get('.navbar-burger').click();
+    cy.location().should((loc) => { expect(loc.pathname).to.eq('/all-users') });
     cy.contains('All Users');
     cy
         .get('table')
         .find('tbody > tr').last()
         .find('td').contains(username);
-    cy.get('.notification.is-success').contains('Welcome!');
     cy.get('.navbar-burger').click();
+    cy.wait(300);
     cy.get('.navbar-menu').within(() => {
         cy
             .get('.navbar-item').contains('User Status')
@@ -59,11 +63,12 @@ it('should allow a user to sign in', () => {
     });
 
     // log a user out
-    cy.get('.navbar-burger').click();
-    cy.get('a').contains('Log Out').click();
+    cy
+        .get('a').contains('Log Out').click();
 
     // assert '/logout' is displayed properly
     cy.get('p').contains('You are now logged out');
+    cy.wait(300);
     cy.get('.navbar-menu').within(() => {
         cy
             .get('.navbar-item').contains('User Status').should('not.be.visible')
@@ -102,7 +107,7 @@ it('should throw an error if the credentials are incorrect', () => {
         .get('input[name="email"]').type(email)
         .get('input[name="password"]').type('incorrectpassword')
         .get('input[type="submit"]').click()
-        .wait(100);
+        .wait(300);
 
     // assert user login failed
     cy.contains('All Users').should('not.be.visible');
