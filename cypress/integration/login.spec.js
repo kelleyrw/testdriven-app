@@ -107,7 +107,7 @@ it('should throw an error if the credentials are incorrect', () => {
         .get('input[name="email"]').type(email)
         .get('input[name="password"]').type('incorrectpassword')
         .get('input[type="submit"]').click()
-        .wait(100);
+        .wait(300);
 
     // assert user login failed
     cy.contains('All Users').should('not.be.visible');
