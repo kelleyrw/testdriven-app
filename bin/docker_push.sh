@@ -25,6 +25,7 @@ if [[ "$1" == "local" ]]; then
     export SWAGGER=test-driven-swagger
     export SWAGGER_REPO=${MAIN_REPO}#${TRAVIS_BRANCH}:services/swagger
     export SECRET_KEY=my_precious
+    export REACT_APP_API_GATEWAY_URL=https://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
 fi
 
 echo "*****************************************************************"
