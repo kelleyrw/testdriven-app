@@ -12,12 +12,6 @@
                     "containerPort": 80
                 }
             ],
-            "environment": [
-                {
-                    "name": "REACT_APP_API_GATEWAY_URL",
-                    "value": "https://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute"
-                }
-            ],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
