@@ -6,6 +6,8 @@ services:
         build:
             context: ./services/users
             dockerfile: Dockerfile-prod
+        expose:
+            - 5000
         environment:
             - FLASK_ENV=production
             - APP_SETTINGS=project.config.ProductionConfig
@@ -14,8 +16,6 @@ services:
             - SECRET_KEY=${SECRET_KEY}
         depends_on:
             - users-db
-        expose:
-            - 5000
 
     users-db:
         build:
