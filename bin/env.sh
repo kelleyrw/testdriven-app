@@ -20,8 +20,7 @@ if   [ "$env" = "local" ]; then
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_dev"
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.DevelopmentConfig"
-    export REACT_APP_USERS_SERVICE_URL=http://localhost
-    export REACT_APP_EXERCISES_SERVICE_URL=http://localhost
+    export BASE_URL=http://localhost
     export LOAD_BALANCER_DNS_NAME=localhost
     export SECRET_KEY='my_precious'
     valid=true
@@ -34,8 +33,7 @@ elif [ "$env" = "dev" ]; then
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_dev"
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.DevelopmentConfig"
-    export REACT_APP_USERS_SERVICE_URL=http://$(dm ip testdriven-dev)
-    export REACT_APP_EXERCISES_SERVICE_URL=http://$(dm ip testdriven-dev)
+    export BASE_URL=http://localhost
     export LOAD_BALANCER_DNS_NAME=$(dm ip testdriven-dev)
     export SECRET_KEY='my_precious'
     valid=true
@@ -46,7 +44,6 @@ elif [ "$env" = "stage" ]; then
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_stage"
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.StagingConfig"
-    export REACT_APP_USERS_SERVICE_URL=http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com
     export LOAD_BALANCER_DNS_NAME=testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com
     export SECRET_KEY='my_precious'
     valid=true
@@ -57,9 +54,7 @@ elif [ "$env" = "prod" ]; then
     export DATABASE_URL="postgresql://localhost:5432/testdriven_users_prod"
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.ProductionConfig"
-    export REACT_APP_USERS_SERVICE_URL=http://testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com
     export LOAD_BALANCER_DNS_NAME=testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com
-    export SECRET_KEY='33d5b28fb4f6d18e7cc6450a521f335d92e890196fa8da38'
     valid=true
 else
     echo ERROR: valid values: 'test' and 'dev'
@@ -70,6 +65,9 @@ fi
 export SQLALCHEMY_DATABASE_URI=$DATABASE_URL
 export API_GATEWAY_URL=rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute
 export REACT_APP_API_GATEWAY_URL=https://${API_GATEWAY_URL}
+export BASE_URL=http://${LOAD_BALANCER_DNS_NAME}
+export REACT_APP_USERS_SERVICE_URL=$BASE_URL
+export REACT_APP_EXERCISES_SERVICE_URL=$BASE_URL
 
 function ping_lambda {
     local cmd=" curl -H \"Content-Type: application/json\" -X POST -d '{\"answer\":\"def sum(x,y):\n    return x+y\"}' https://rdok4ehqce.execute-api.us-east-1.amazonaws.com/v1/execute; echo"
