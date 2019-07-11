@@ -19,6 +19,9 @@ it('should not display user info if a user is not logged in', () => {
 });
 
 it('should display user info if a user is logged in', () => {
+    cy.server();
+    cy.route('POST', 'auth/register').as('createUser');
+
     // register user
     cy
         .visit('/register')
@@ -26,9 +29,8 @@ it('should display user info if a user is logged in', () => {
         .get('input[name="email"]').type(email)
         .get('input[name="password"]').type(password)
         .get('input[type="submit"]').click()
-        .get('.navbar-burger').click();
-
-    cy.wait(500);
+        .get('.navbar-burger').click()
+        .wait('@createUser');
 
     // assert '/status' is displayed properly
     cy.visit('/status');

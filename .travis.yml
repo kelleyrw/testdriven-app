@@ -5,6 +5,21 @@ services:
 
 env:
     DOCKER_COMPOSE_VERSION: 1.24.0
+    COMMIT: ${TRAVIS_COMMIT::8}
+    MAIN_REPO: https://github.com/kelleyrw/testdriven-app.git
+    USERS: test-driven-users
+    USERS_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/users
+    USERS_DB: test-driven-users_db
+    USERS_DB_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/users/project/db
+    CLIENT: test-driven-client
+    CLIENT_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/client
+    SWAGGER: test-driven-swagger
+    SWAGGER_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/swagger
+    EXERCISES: test-driven-exercises
+    EXERCISES_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/exercises
+    EXERCISES_DB: test-driven-exercises_db
+    EXERCISES_DB_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/exercises/project/db
+    SECRET_KEY: my_precious
 
 before_install:
     - sudo rm /usr/local/bin/docker-compose
@@ -14,15 +29,19 @@ before_install:
 
 before_script:
     - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
-    - export SECRET_KEY=my_precious
+    - export REACT_APP_EXERCISES_SERVICE_URL=http://127.0.0.1
+    - export REACT_APP_API_GATEWAY_URL=${REACT_APP_API_GATEWAY_URL}
+    - if [[ "$TRAVIS_BRANCH" == "staging"    ]]; then export LOAD_BALANCER_DNS_NAME=http://${LOAD_BALANCER_STAGE_DNS_NAME}; fi
+    - if [[ "$TRAVIS_BRANCH" == "production" ]]; then export LOAD_BALANCER_DNS_NAME=http://${LOAD_BALANCER_PROD_DNS_NAME}; fi
     - npm install
-    - pushd bin
-    - pwd
-    - ls -l
 
 script:
-    - bash test.sh all localhost
+    - bash ./bin/test_ci.sh ${TRAVIS_BRANCH}
+
+after_success:
+    - bash ./bin/docker_push.sh
+    - bash ./bin/docker_deploy_stage.sh
+    - bash ./bin/docker_deploy_prod.sh
 
 after_script:
-    - popd
     - docker-compose down
