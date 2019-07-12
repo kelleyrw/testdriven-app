@@ -2,7 +2,7 @@
     "containerDefinitions": [
         {
             "name": "users",
-            "image": "%s.dkr.ecr.us-east-1.amazonaws.com/test-driven-users:production",
+            "image": "%s.dkr.ecr.us-east-1.amazonaws.com/rwk/test-driven-users:production",
             "essential": true,
             "memoryReservation": 300,
             "portMappings": [

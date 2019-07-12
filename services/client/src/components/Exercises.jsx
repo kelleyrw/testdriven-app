@@ -70,7 +70,8 @@ class Exercises extends Component {
         return (
             <div>
                 <h1 className="title is-1">Exercises</h1>
-                <hr/><br/>
+                <hr/>
+                <br/>
                 {!this.props.isAuthenticated &&
                  <div className="notification is-warning">
                      <span>Please log in to submit an exercise.</span>

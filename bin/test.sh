@@ -6,7 +6,7 @@ bin_dir=$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && $MYPWD)
 project_dir=$(cd -P $bin_dir/.. && $MYPWD)
 
 type=${1:-all}
-host=${2:-localhost:3000}
+host=${2:-localhost}
 fails=""
 
 pushd ${project_dir}
@@ -27,6 +27,10 @@ server() {
   inspect $? users
   docker-compose exec users flake8 project
   inspect $? users-lint
+  docker-compose exec exercises python manage.py test
+  inspect $? exercises
+  docker-compose exec exercises flake8 project
+  inspect $? exercises-lint
   docker-compose down
 }
 
@@ -42,8 +46,9 @@ client() {
 e2e() {
   docker-compose -f ${project_dir}/docker-compose-stage.yml up -d --build
   docker-compose -f ${project_dir}/docker-compose-stage.yml exec users python manage.py recreate_db
-#  cmd="${project_dir}/node_modules/.bin/cypress run --config baseUrl=http://${host} --spec ${project_dir}/cypress/integration/status.spec.js"
-  cmd="${project_dir}/node_modules/.bin/cypress run --config baseUrl=http://${host}"
+  docker-compose -f ${project_dir}/docker-compose-stage.yml exec exercises python manage.py recreate_db
+  docker-compose -f ${project_dir}/docker-compose-stage.yml exec exercises python manage.py seed_db
+  cmd="${project_dir}/node_modules/.bin/cypress run --config baseUrl=http://${host} --env REACT_APP_API_GATEWAY_URL=${REACT_APP_API_GATEWAY_URL},LOAD_BALANCER_DNS_NAME=${host}"
   echo $cmd
   eval $cmd
 
@@ -58,6 +63,10 @@ all() {
   inspect $? users
   docker-compose exec users flake8 project
   inspect $? users-lint
+  docker-compose exec exercises python manage.py test
+  inspect $? exercises
+  docker-compose exec exercises flake8 project
+  inspect $? exercises-lint
   docker-compose exec client npm run test:ci
   inspect $? client
   docker-compose down

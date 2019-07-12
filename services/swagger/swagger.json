@@ -88,10 +88,9 @@
         }
     },
     "servers"    : [
-        {"url" : "http://testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com"},
-        {"url" : "http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com"},
         {"url" : "http://localhost"},
         {"url" : "http://192.168.99.103"},
-        {"url" : "http://18.213.245.35"}
+        {"url" : "http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com"},
+        {"url" : "http://testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com"}
     ]
 }
