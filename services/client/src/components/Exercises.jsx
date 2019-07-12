@@ -39,31 +39,34 @@ class Exercises extends Component {
         this.setState(newState);
     };
 
-    submitExercise(event) {
+    submitExercise(event, id) {
         event.preventDefault();
         const newState = this.state.editor;
+        const exercise = this.state.exercises.filter(el => el.id === id)[0];
         newState.showGrading = true;
         newState.showCorrect = false;
         newState.showIncorrect = false;
         newState.button.isDisabled = true;
         this.setState(newState);
-        const data = {answer: this.state.editor.value};
+        const data = {
+            answer: this.state.editor.value,
+            test: exercise.test_code,
+            solution: exercise.test_code_solution
+        };
         const url = process.env.REACT_APP_API_GATEWAY_URL;
         axios.post(url, data)
             .then((res) => {
-                newState.showGrading = false
-                newState.button.isDisabled = false
-                if (res.data) { newState.showCorrect = true }
-                ;
-                if (!res.data) { newState.showIncorrect = true }
-                ;
+                newState.showGrading = false;
+                newState.button.isDisabled = false;
+                if (res.data && !res.data.errorType) { newState.showCorrect = true }
+                if (!res.data || res.data.errorType) { newState.showIncorrect = true }
                 this.setState(newState);
             })
             .catch((err) => {
                 newState.showGrading = false
                 newState.button.isDisabled = false
                 console.log(err);
-            });
+            })
     };
 
     render() {
@@ -79,7 +82,7 @@ class Exercises extends Component {
                 }
                 {this.state.exercises.length > 0 &&
                  <Exercise
-                     exercise={this.state.exercises[0]}
+                     exercise={this.state.exercises[1]}
                      editor={this.state.editor}
                      isAuthenticated={this.props.isAuthenticated}
                      onChange={this.onChange}
