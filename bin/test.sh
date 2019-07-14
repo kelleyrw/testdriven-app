@@ -49,22 +49,22 @@ client() {
 # run e2e tests
 e2e() {
   echo build
-  docker-compose -f ${project_dir}/docker-compose-stage.yml up -d --build
+  docker-compose -f ${project_dir}/docker-compose-stage.yml up -d --build --force-recreate
 
-  echo user recreate_db
-  docker-compose -f ${project_dir}/docker-compose-stage.yml exec users python manage.py recreate_db
+#  echo user recreate_db
+#  docker-compose -f ${project_dir}/docker-compose-stage.yml exec users python manage.py recreate_db
 
-  echo exercises recreate_db
-  docker-compose -f ${project_dir}/docker-compose-stage.yml exec exercises python manage.py recreate_db
+#  echo exercises recreate_db
+#  docker-compose -f ${project_dir}/docker-compose-stage.yml exec exercises python manage.py recreate_db
+#
+#  echo exercises seed_db
+#  docker-compose -f ${project_dir}/docker-compose-stage.yml exec exercises python manage.py seed_db
+#
+#  echo scores recreate_db
+#  docker-compose -f ${project_dir}/docker-compose-stage.yml exec scores python manage.py recreate_db
 
-  echo exercises seed_db
-  docker-compose -f ${project_dir}/docker-compose-stage.yml exec exercises python manage.py seed_db
-
-  echo scores recreate_db
-  docker-compose -f ${project_dir}/docker-compose-stage.yml exec scores python manage.py recreate_db
-
-  echo scores seed_db
-  docker-compose -f ${project_dir}/docker-compose-stage.yml exec scores python manage.py seed_db
+#  echo scores seed_db
+#  docker-compose -f ${project_dir}/docker-compose-stage.yml exec scores python manage.py seed_db
 
   echo e2e
   cmd="${project_dir}/node_modules/.bin/cypress run \

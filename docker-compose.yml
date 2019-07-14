@@ -52,10 +52,10 @@ services:
         environment:
             - FLASK_ENV=development
             - APP_SETTINGS=project.config.DevelopmentConfig
-            - USERS_SERVICE_URL=http://users:5000
             - SECRET_KEY=my_precious
             - DATABASE_URL=postgres://postgres:postgres@exercises-db:5432/exercises_dev
             - DATABASE_TEST_URL=postgres://postgres:postgres@exercises-db:5432/exercises_test
+            - USERS_SERVICE_URL=http://users:5000
         depends_on:
             - users
             - exercises-db
