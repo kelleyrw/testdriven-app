@@ -48,13 +48,29 @@ client() {
 
 # run e2e tests
 e2e() {
+  echo build
   docker-compose -f ${project_dir}/docker-compose-stage.yml up -d --build
+
+  echo user recreate_db
   docker-compose -f ${project_dir}/docker-compose-stage.yml exec users python manage.py recreate_db
+
+  echo exercises recreate_db
   docker-compose -f ${project_dir}/docker-compose-stage.yml exec exercises python manage.py recreate_db
+
+  echo exercises seed_db
   docker-compose -f ${project_dir}/docker-compose-stage.yml exec exercises python manage.py seed_db
+
+  echo scores recreate_db
   docker-compose -f ${project_dir}/docker-compose-stage.yml exec scores python manage.py recreate_db
+
+  echo scores seed_db
   docker-compose -f ${project_dir}/docker-compose-stage.yml exec scores python manage.py seed_db
-  cmd="${project_dir}/node_modules/.bin/cypress run --config baseUrl=http://${host} --env REACT_APP_API_GATEWAY_URL=${REACT_APP_API_GATEWAY_URL},LOAD_BALANCER_DNS_NAME=${host}"
+
+  echo e2e
+  cmd="${project_dir}/node_modules/.bin/cypress run \
+    --config baseUrl=http://${host} \
+    --env REACT_APP_API_GATEWAY_URL=${REACT_APP_API_GATEWAY_URL},LOAD_BALANCER_DNS_NAME=${host}
+  "
   echo $cmd
   eval $cmd
 
