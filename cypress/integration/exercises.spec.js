@@ -26,7 +26,9 @@ describe('Exercises', () => {
             .get('input[name="email"]').type(email)
             .get('input[name="password"]').type(password)
             .get('input[type="submit"]').click()
-            .wait('@createUser');
+            .wait('@createUser')
+            .wait(300)
+        ;
 
         // assert exercises are displayed correctly
         cy
