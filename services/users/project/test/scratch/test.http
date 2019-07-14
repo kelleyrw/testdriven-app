@@ -58,3 +58,8 @@ http://localhost:3000/users
 
 ###
 
+GET http://localhost:5003/score/user
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjI2MTIxNTAsImlhdCI6MTU2MDAyMDE1MCwic3ViIjo2fQ.wcOAG7C8Y70AvF9k0kMut8qlm3sFixMDI9AyqK1TVRc
+
+###

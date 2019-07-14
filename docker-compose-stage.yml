@@ -1,6 +1,12 @@
 version: '3.7'
 
+# ============================================================================ #
+
 services:
+
+    # ------------------------------------------------------------------------ #
+    # users
+    # ------------------------------------------------------------------------ #
 
     users:
         build:
@@ -27,6 +33,10 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
 
+    # ------------------------------------------------------------------------ #
+    # exercises
+    # ------------------------------------------------------------------------ #
+
     exercises:
         build:
             context: ./services/exercises
@@ -51,6 +61,42 @@ services:
         environment:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
+
+    # ------------------------------------------------------------------------ #
+    # scores
+    # ------------------------------------------------------------------------ #
+
+    scores:
+        build:
+            context: ./services/scores
+            dockerfile: Dockerfile-stage
+        expose:
+            - 5000
+        environment:
+            - FLASK_ENV=production
+            - APP_SETTINGS=project.config.StagingConfig
+            - DATABASE_URL=postgres://postgres:postgres@scores-db:5432/scores_stage
+            - DATABASE_TEST_URL=postgres://postgres:postgres@scores-db:5432/scores_test
+            - USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
+            - EXERCISES_SERVICE_URL=${REACT_APP_EXERCISES_SERVICE_URL}
+        depends_on:
+            - users
+            - scores-db
+            - exercises
+
+    scores-db:
+        build:
+            context: ./services/scores/project/db
+            dockerfile: Dockerfile
+        expose:
+            - 5432
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+
+    # ------------------------------------------------------------------------ #
+    # UX
+    # ------------------------------------------------------------------------ #
 
     client:
         container_name: client
@@ -88,3 +134,5 @@ services:
         depends_on:
             - users
             - client
+
+# ============================================================================ #

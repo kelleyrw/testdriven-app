@@ -4,6 +4,10 @@ import renderer from 'react-test-renderer';
 
 import Message from '../Message';
 
+beforeEach(() => {
+    console.error = jest.fn();
+    console.error.mockClear();
+});
 
 describe('When given a success message', () => {
     const removeMessage = jest.fn();

@@ -16,6 +16,11 @@ const loginFormProps = {
     formRules: loginFormRules,
 }
 
+beforeEach(() => {
+    console.error = jest.fn();
+    console.error.mockClear();
+});
+
 test('FormErrors (with register form) renders properly', () => {
     const wrapper = shallow(<FormErrors {...registerFormProps} />);
     const ul = wrapper.find('ul');

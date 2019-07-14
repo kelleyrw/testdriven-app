@@ -30,6 +30,7 @@ before_install:
 before_script:
     - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
     - export REACT_APP_EXERCISES_SERVICE_URL=http://127.0.0.1
+    - export REACT_APP_SCORES_SERVICE_URL=http://127.0.0.1
     - export REACT_APP_API_GATEWAY_URL=${REACT_APP_API_GATEWAY_URL}
     - if [[ "$TRAVIS_BRANCH" == "staging"    ]]; then export LOAD_BALANCER_DNS_NAME=http://${LOAD_BALANCER_STAGE_DNS_NAME}; fi
     - if [[ "$TRAVIS_BRANCH" == "production" ]]; then export LOAD_BALANCER_DNS_NAME=http://${LOAD_BALANCER_PROD_DNS_NAME}; fi

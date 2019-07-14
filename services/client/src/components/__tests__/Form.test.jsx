@@ -29,6 +29,11 @@ const testData = [
     }
 ]
 
+beforeEach(() => {
+    console.error = jest.fn();
+    console.error.mockClear();
+});
+
 describe('When not authenticated', () => {
     testData.forEach((el) => {
         const component = <Form {...el} />;

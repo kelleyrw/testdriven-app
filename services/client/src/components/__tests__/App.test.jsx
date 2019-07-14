@@ -6,6 +6,12 @@ jest.mock('react-ace');
 
 import App from '../../App';
 
+
+beforeEach(() => {
+    console.error = jest.fn();
+    console.error.mockClear();
+});
+
 beforeAll(() => {
     global.localStorage = {
         getItem: () => 'someToken'

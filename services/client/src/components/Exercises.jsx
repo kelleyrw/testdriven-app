@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import AceEditor from 'react-ace';
 import 'brace/mode/python';
+import PropTypes from 'prop-types';
 import 'brace/theme/solarized_dark';
 import axios from 'axios';
 
@@ -82,7 +83,7 @@ class Exercises extends Component {
                 }
                 {this.state.exercises.length > 0 &&
                  <Exercise
-                     exercise={this.state.exercises[1]}
+                     exercise={this.state.exercises[0]}
                      editor={this.state.editor}
                      isAuthenticated={this.props.isAuthenticated}
                      onChange={this.onChange}
@@ -92,6 +93,10 @@ class Exercises extends Component {
             </div>
         )
     };
+}
+
+Exercises.propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired,
 };
 
 export default Exercises;

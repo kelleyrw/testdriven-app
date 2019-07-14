@@ -4,6 +4,11 @@ import renderer from 'react-test-renderer';
 
 import Footer from '../Footer';
 
+beforeEach(() => {
+    console.error = jest.fn();
+    console.error.mockClear();
+});
+
 test('Footer renders properly', () => {
     const wrapper = shallow(<Footer/>);
     const element = wrapper.find('span');

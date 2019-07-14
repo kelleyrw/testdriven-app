@@ -1,5 +1,6 @@
 import React from 'react';
 import AceEditor from 'react-ace';
+import PropTypes from 'prop-types';
 import 'brace/mode/python';
 import 'brace/theme/solarized_dark';
 
@@ -31,7 +32,8 @@ const Exercise = (props) => {
                      className="button is-primary"
                      onClick={(evt) => props.submitExercise(evt, props.exercise.id)}
                      disabled={props.editor.button.isDisabled}
-                 >Run Code</button>
+                 >Run Code
+                 </button>
                  {props.editor.showGrading &&
                   <h5 className="title is-5">
               <span className="icon is-large">
@@ -61,6 +63,26 @@ const Exercise = (props) => {
             <br/><br/>
         </div>
     )
+};
+
+Exercise.propTypes = {
+    exercise: PropTypes.shape({
+        body: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
+        test_code: PropTypes.string.isRequired,
+        test_code_solution: PropTypes.string.isRequired,
+    }).isRequired,
+
+    editor: PropTypes.shape({
+        button: PropTypes.object.isRequired,
+        showCorrect: PropTypes.bool.isRequired,
+        showGrading: PropTypes.bool.isRequired,
+        showIncorrect: PropTypes.bool.isRequired,
+        value: PropTypes.string.isRequired,
+    }).isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired,
+    submitExercise: PropTypes.func.isRequired,
 };
 
 export default Exercise;
