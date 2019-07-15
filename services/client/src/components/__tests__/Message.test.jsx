@@ -1,13 +1,8 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import {shallow} from 'enzyme';
 import renderer from 'react-test-renderer';
 
 import Message from '../Message';
-
-beforeEach(() => {
-    console.error = jest.fn();
-    console.error.mockClear();
-});
 
 describe('When given a success message', () => {
     const removeMessage = jest.fn();
@@ -17,6 +12,11 @@ describe('When given a success message', () => {
         messageType: 'success',
         removeMessage: removeMessage,
     }
+
+    beforeEach(() => {
+        console.error = jest.fn();
+        console.error.mockClear();
+    });
 
     it(`Message renders properly`, () => {
         const wrapper = shallow(<Message {...messageSuccessProps} />);
@@ -49,6 +49,11 @@ describe('When given a danger message', () => {
         messageType: 'danger',
         removeMessage: removeMessage,
     }
+
+    beforeEach(() => {
+        console.error = jest.fn();
+        console.error.mockClear();
+    });
 
     it(`Message renders properly`, () => {
         const wrapper = shallow(<Message {...messageDangerProps} />);

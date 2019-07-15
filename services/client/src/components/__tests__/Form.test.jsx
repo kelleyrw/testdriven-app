@@ -1,7 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import {shallow} from 'enzyme';
 import renderer from 'react-test-renderer';
-import { MemoryRouter, Switch, Redirect } from 'react-router-dom';
+import {MemoryRouter, Switch, Redirect} from 'react-router-dom';
 
 import Form from '../forms/Form';
 
@@ -29,12 +29,12 @@ const testData = [
     }
 ]
 
-beforeEach(() => {
-    console.error = jest.fn();
-    console.error.mockClear();
-});
-
 describe('When not authenticated', () => {
+    beforeEach(() => {
+        console.error = jest.fn();
+        console.error.mockClear();
+    });
+
     testData.forEach((el) => {
         const component = <Form {...el} />;
         it(`${el.formType} Form renders properly`, () => {
@@ -56,7 +56,7 @@ describe('When not authenticated', () => {
             const input = wrapper.find('input[type="email"]');
             expect(wrapper.instance().handleUserFormSubmit).toHaveBeenCalledTimes(0);
             input.simulate(
-                'change', { target: { name: 'email', value: 'test@test.com'} })
+                'change', {target: {name: 'email', value: 'test@test.com'}})
             wrapper.find('form').simulate('submit', el.formData)
             expect(wrapper.instance().handleUserFormSubmit).toHaveBeenCalledWith(el.formData);
             expect(wrapper.instance().handleUserFormSubmit).toHaveBeenCalledTimes(1);
@@ -75,6 +75,11 @@ describe('When not authenticated', () => {
 });
 
 describe('When authenticated', () => {
+    beforeEach(() => {
+        console.error = jest.fn();
+        console.error.mockClear();
+    });
+
     testData.forEach((el) => {
         const component = <Form
             formType={el.formType}

@@ -72,4 +72,3 @@ test('Exercises will call componentDidMount when mounted', () => {
     const wrapper = mount(<Exercises/>);
     expect(onDidMount).toHaveBeenCalledTimes(1)
 });
-
