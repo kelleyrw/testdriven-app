@@ -42,49 +42,49 @@ then
       cluster="test-driven-production-cluster"
 
       # users
-#      service="testdriven-users-prod-service"
-#      template="ecs_users_prod_taskdefinition.json"
-#      task_template=$(cat "ecs/$template")
-#      task_def=$(printf "$task_template" $AWS_ACCOUNT_ID $AWS_RDS_URI $PRODUCTION_SECRET_KEY)
-#      echo "$task_def"
-#      register_definition
-#      update_service
-#
-#      # exercises
-#      service="testdriven-exercises-prod-service"
-#      template="ecs_exercises_prod_taskdefinition.json"
-#      task_template=$(cat "ecs/$template")
-#      task_def=$(printf "$task_template" $AWS_ACCOUNT_ID $AWS_RDS_EXERCISES_URI)
-#      echo "$task_def"
-#      register_definition
-#      update_service
+      service="testdriven-users-prod-service"
+      template="ecs_users_prod_taskdefinition.json"
+      task_template=$(cat "ecs/$template")
+      task_def=$(printf "$task_template" $AWS_ACCOUNT_ID $AWS_RDS_URI $PRODUCTION_SECRET_KEY)
+      echo "$task_def"
+      register_definition
+      update_service
+
+      # exercises
+      service="testdriven-exercises-prod-service"
+      template="ecs_exercises_prod_taskdefinition.json"
+      task_template=$(cat "ecs/$template")
+      task_def=$(printf "$task_template" $AWS_ACCOUNT_ID $AWS_RDS_EXERCISES_URI)
+      echo "$task_def"
+      register_definition
+      update_service
 
       # scores
       service="testdriven-scores-prod-service"
       template="ecs_scores_prod_taskdefinition.json"
       task_template=$(cat "ecs/$template")
       task_def=$(printf "$task_template" $AWS_ACCOUNT_ID $AWS_RDS_SCORES_URI)
-#      echo "$task_def"
-#      register_definition
-#      update_service
+      echo "$task_def"
+      register_definition
+      update_service
 
-#      # client
-#      service="testdriven-client-prod-service"
-#      template="ecs_client_prod_taskdefinition.json"
-#      task_template=$(cat "ecs/$template")
-#      task_def=$(printf "$task_template" $AWS_ACCOUNT_ID)
-#      echo "$task_def"
-#      register_definition
-#      update_service
-#
-#      # swagger
-#      service="testdriven-swagger-prod-service"
-#      template="ecs_swagger_prod_taskdefinition.json"
-#      task_template=$(cat "ecs/$template")
-#      task_def=$(printf "$task_template" $AWS_ACCOUNT_ID)
-#      echo "$task_def"
-#      register_definition
-#      update_service
+      # client
+      service="testdriven-client-prod-service"
+      template="ecs_client_prod_taskdefinition.json"
+      task_template=$(cat "ecs/$template")
+      task_def=$(printf "$task_template" $AWS_ACCOUNT_ID)
+      echo "$task_def"
+      register_definition
+      update_service
+
+      # swagger
+      service="testdriven-swagger-prod-service"
+      template="ecs_swagger_prod_taskdefinition.json"
+      task_template=$(cat "ecs/$template")
+      task_def=$(printf "$task_template" $AWS_ACCOUNT_ID)
+      echo "$task_def"
+      register_definition
+      update_service
     }
 
     configure_aws_cli
