@@ -63,11 +63,11 @@ then
       # scores
       service="testdriven-scores-stage-service"
       template="ecs_scores_stage_taskdefinition.json"
-      task_template=$(cat "ecs/$template")
-      task_def=$(printf "$task_template" $AWS_ACCOUNT_ID $AWS_ACCOUNT_ID)
-      echo "$task_def"
-      register_definition
-      #update_service
+      sk_template=$(cat "ecs/$template")
+      sk_def=$(printf "$task_template" $AWS_ACCOUNT_ID $AWS_ACCOUNT_ID)
+      ho "$task_def"
+      gister_definition
+      update_service
 
       # client
       service="testdriven-client-stage-service"
