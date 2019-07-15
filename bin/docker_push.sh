@@ -105,11 +105,11 @@ then
     # scores
     docker build $SCORES_REPO -t $SCORES:$COMMIT -f Dockerfile-$DOCKER_ENV
     docker tag $SCORES:$COMMIT $REPO/$SCORES:$TAG
-    docker push $REPO/$SCORES:$TwG
+    docker push $REPO/$SCORES:$TAG
     # scores db
-#    docker build $SCORES_DB_REPO -t $SCORES_DB:$COMMIT -f Dockerfile
-#    docker tag $SCORES_DB:$COMMIT $REPO/$SCORES_DB:$TAG
-#    docker push $REPO/$SCORES_DB:$TAG
+    docker build $SCORES_DB_REPO -t $SCORES_DB:$COMMIT -f Dockerfile
+    docker tag $SCORES_DB:$COMMIT $REPO/$SCORES_DB:$TAG
+    docker push $REPO/$SCORES_DB:$TAG
   fi
 fi
 
