@@ -2,7 +2,7 @@
     "containerDefinitions": [
         {
             "name": "users",
-            "image": "%s.dkr.ecr.us-east-1.amazonaws.com/rwk/test-driven-user:staging",
+            "image": "%s.dkr.ecr.us-east-1.amazonaws.com/rwk/test-driven-users:staging",
             "essential": true,
             "memoryReservation": 300,
             "portMappings": [
@@ -43,7 +43,7 @@
         },
         {
             "name": "users-db",
-            "image": "%s.dkr.ecr.us-east-1.amazonaws.com/rwk/test-driven-user_db:staging",
+            "image": "%s.dkr.ecr.us-east-1.amazonaws.com/rwk/test-driven-users_db:staging",
             "essential": true,
             "memoryReservation": 300,
             "portMappings": [
