@@ -6,10 +6,19 @@ import unittest
 
 from project.tests.base import BaseTestCase
 from project.tests.util import add_exercise
+from flask_api import status
 
 
 class TestExercisesService(BaseTestCase):
     """Tests for the Exercises Service."""
+
+    def test_execises(self):
+        """Ensure the /ping route behaves correctly."""
+        response = self.client.get("/exercises/ping")
+        data = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("pong!", data["message"])
+        self.assertIn("success", data["status"])
 
     def test_all_exercises(self):
         """Ensure get all exercises behaves correctly."""
