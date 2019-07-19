@@ -27,11 +27,11 @@
                 },
                 {
                     "name": "USERS_SERVICE_URL",
-                    "value": "http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com"
+                    "value": "http://testdriven-staging-alb-2001728833.us-east-1.elb.amazonaws.com"
                 },
                 {
                     "name": "EXERCISES_SERVICE_URL",
-                    "value": "http://testdriven-staging-alb-912419405.us-east-1.elb.amazonaws.com"
+                    "value": "http://testdriven-staging-alb-2001728833.us-east-1.elb.amazonaws.com"
                 }
             ],
             "links": [
