@@ -20,7 +20,6 @@ describe('Login', () => {
 
     it('should allow a user to sign in', () => {
         cy.server();
-        cy.route('POST', 'auth/register').as('createUser');
         cy.route('POST', 'auth/login').as('loginUser');
 
         // register user
@@ -30,13 +29,10 @@ describe('Login', () => {
             .get('input[name="email"]').type(email)
             .get('input[name="password"]').type(password)
             .get('input[type="submit"]').click()
-            .wait('@createUser')
-        ;
 
         // log a user out
         cy.get('.navbar-burger').click();
         cy.contains('Log Out').click();
-
 
         // log a user in
         cy
@@ -49,7 +45,6 @@ describe('Login', () => {
         // assert user is redirected to '/'
         cy.get('.notification.is-success').contains('Welcome!');
         cy.contains('Users').click();
-
         // assert '/all-users' is displayed properly
         cy.get('.navbar-burger').click();
         cy.location().should((loc) => { expect(loc.pathname).to.eq('/all-users') });
@@ -59,7 +54,6 @@ describe('Login', () => {
             .find('tbody > tr').last()
             .find('td').contains(username);
         cy.get('.navbar-burger').click();
-        cy.wait(300);
         cy.get('.navbar-menu').within(() => {
             cy
                 .get('.navbar-item').contains('User Status')
@@ -69,11 +63,11 @@ describe('Login', () => {
         });
 
         // log a user out
+        cy
+            .get('a').contains('Log Out').click();
 
-        cy.get('a').contains('Log Out').click();
         // assert '/logout' is displayed properly
         cy.get('p').contains('You are now logged out');
-        cy.wait(300);
         cy.get('.navbar-menu').within(() => {
             cy
                 .get('.navbar-item').contains('User Status').should('not.be.visible')
