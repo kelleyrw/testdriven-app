@@ -83,11 +83,6 @@ then
     docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
     docker push $REPO/$USERS:$TAG
 
-    # users db
-    docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile
-    docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
-    docker push $REPO/$USERS_DB:$TAG
-
     # client
     docker build $CLIENT_REPO -t $CLIENT:$COMMIT -f Dockerfile-$DOCKER_ENV --build-arg REACT_APP_USERS_SERVICE_URL=$REACT_APP_USERS_SERVICE_URL --build-arg REACT_APP_EXERCISES_SERVICE_URL=$REACT_APP_EXERCISES_SERVICE_URL --build-arg REACT_APP_SCORES_SERVICE_URL=$REACT_APP_SCORES_SERVICE_URL --build-arg REACT_APP_API_GATEWAY_URL=$REACT_APP_API_GATEWAY_URL
     docker tag $CLIENT:$COMMIT $REPO/$CLIENT:$TAG
@@ -103,20 +98,28 @@ then
     docker tag $EXERCISES:$COMMIT $REPO/$EXERCISES:$TAG
     docker push $REPO/$EXERCISES:$TAG
 
-    # exercises db
-    docker build $EXERCISES_DB_REPO -t $EXERCISES_DB:$COMMIT -f Dockerfile
-    docker tag $EXERCISES_DB:$COMMIT $REPO/$EXERCISES_DB:$TAG
-    docker push $REPO/$EXERCISES_DB:$TAG
-
     # scores
     docker build $SCORES_REPO -t $SCORES:$COMMIT -f Dockerfile-$DOCKER_ENV
     docker tag $SCORES:$COMMIT $REPO/$SCORES:$TAG
     docker push $REPO/$SCORES:$TAG
 
     # scores db
-    docker build $SCORES_DB_REPO -t $SCORES_DB:$COMMIT -f Dockerfile
-    docker tag $SCORES_DB:$COMMIT $REPO/$SCORES_DB:$TAG
-    docker push $REPO/$SCORES_DB:$TAG
+    if [ "$TRAVIS_BRANCH" == "staging" ]
+    then
+        docker build $SCORES_DB_REPO -t $SCORES_DB:$COMMIT -f Dockerfile
+        docker tag $SCORES_DB:$COMMIT $REPO/$SCORES_DB:$TAG
+        docker push $REPO/$SCORES_DB:$TAG
+
+        # users db
+        docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile
+        docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
+        docker push $REPO/$USERS_DB:$TAG
+
+        # exercises db
+        docker build $EXERCISES_DB_REPO -t $EXERCISES_DB:$COMMIT -f Dockerfile
+        docker tag $EXERCISES_DB:$COMMIT $REPO/$EXERCISES_DB:$TAG
+        docker push $REPO/$EXERCISES_DB:$TAG
+    fi
   fi
 fi
 

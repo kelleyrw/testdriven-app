@@ -55,6 +55,9 @@ elif [ "$env" = "prod" ]; then
     export DATABASE_TEST_URL="postgresql//localhost:5432/testdriven_users_test"
     export APP_SETTINGS="project.config.ProductionConfig"
     export LOAD_BALANCER_DNS_NAME=testdriven-production-alb-1692081710.us-east-1.elb.amazonaws.com
+    export AWS_RDS_URI=postgres://webapp:Scarlett2014@testdriven-production.clb31hfmwuad.us-east-1.rds.amazonaws.com/users_prod
+    export AWS_RDS_EXERCISES_URI=postgres://webapp:Scarlett2014@testdriven-exercises-production.clb31hfmwuad.us-east-1.rds.amazonaws.com/exercises_prod
+    export AWS_RDS_SCORES_URI=postgres://webapp:Scarlett2014@testdriven-scores-production.clb31hfmwuad.us-east-1.rds.amazonaws.com/scores_prod
     valid=true
 else
     echo ERROR: valid values: 'test' and 'dev'
@@ -87,13 +90,16 @@ if $valid; then
     echo "DATABASE_TEST_URL               = $DATABASE_TEST_URL"
     echo "APP_SETTINGS                    = $APP_SETTINGS"
     echo "SQLALCHEMY_DATABASE_URI         = $SQLALCHEMY_DATABASE_URI"
-    echo "SECRET_KEY                      = $SECRET_KEY"
     echo "API_GATEWAY_URL                 = $API_GATEWAY_URL"
     echo "REACT_APP_API_GATEWAY_URL       = $REACT_APP_API_GATEWAY_URL"
     echo "REACT_APP_USERS_SERVICE_URL     = $REACT_APP_USERS_SERVICE_URL"
     echo "REACT_APP_EXERCISES_SERVICE_URL = $REACT_APP_EXERCISES_SERVICE_URL"
     echo "REACT_APP_SCORES_SERVICE_URL    = $REACT_APP_SCORES_SERVICE_URL"
     echo "LOAD_BALANCER_DNS_NAME          = $LOAD_BALANCER_DNS_NAME"
+    echo "AWS_RDS_URI                     = $AWS_RDS_URI"
+    echo "AWS_RDS_EXERCISES_URI           = $AWS_RDS_EXERCISES_URI"
+    echo "AWS_RDS_SCORES_URI              = $AWS_RDS_SCORES_URI"
+    echo "SECRET_KEY                      = <not set>"
 fi
 
 popd
