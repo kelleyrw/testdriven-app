@@ -31,7 +31,6 @@ ENV REACT_APP_API_GATEWAY_URL $REACT_APP_API_GATEWAY_URL
 COPY . /usr/src/app
 RUN npm run build
 
-
 #########
 # FINAL #
 #########
