@@ -8,44 +8,44 @@ jest.mock('react-ace');
 import Exercise from '../Exercise';
 
 const testData = {
-    exercise: {
-        id: 0,
-        body: `Define a function called sum that takes two integers
+  exercise: {
+    id: 0,
+    body: `Define a function called sum that takes two integers
     as arguments and returns their sum.`
+  },
+  editor: {
+    value: '# Enter your code here.',
+    button: {
+      isDisabled: false,
     },
-    editor: {
-        value: '# Enter your code here.',
-        button: {
-            isDisabled: false,
-        },
-        showGrading: false,
-        showCorrect: false,
-        showIncorrect: false,
-    },
-    isAuthenticated: false,
-    onChange: jest.fn(),
-    submitExercise: jest.fn(),
+    showGrading: false,
+    showCorrect: false,
+    showIncorrect: false,
+  },
+  isAuthenticated: false,
+  onChange: jest.fn(),
+  submitExercise: jest.fn(),
 }
 
 beforeEach(() => {
-    console.error = jest.fn();
-    console.error.mockClear();
+  console.error = jest.fn();
+  console.error.mockClear();
 });
 
 test('Exercise renders properly', () => {
-    const wrapper = shallow(<Exercise {...testData}/>);
-    const heading = wrapper.find('h5');
-    expect(heading.length).toBe(1);
-    expect(heading.text()).toBe(testData.exercise.body)
+  const wrapper = shallow(<Exercise {...testData}/>);
+  const heading = wrapper.find('h5');
+  expect(heading.length).toBe(1);
+  expect(heading.text()).toBe(testData.exercise.body)
 });
 
 test('Exercises renders a snapshot properly when not authenticated', () => {
-    const tree = renderer.create(<Exercise {...testData}/>).toJSON();
-    expect(tree).toMatchSnapshot();
+  const tree = renderer.create(<Exercise {...testData}/>).toJSON();
+  expect(tree).toMatchSnapshot();
 });
 
 test('Exercises renders a snapshot properly when authenticated', () => {
-    testData.isAuthenticated = true;
-    const tree = renderer.create(<Exercise {...testData}/>).toJSON();
-    expect(tree).toMatchSnapshot();
+  testData.isAuthenticated = true;
+  const tree = renderer.create(<Exercise {...testData}/>).toJSON();
+  expect(tree).toMatchSnapshot();
 });
