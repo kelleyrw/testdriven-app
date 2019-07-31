@@ -47,7 +47,9 @@ class Exercises extends Component {
                 })
                 this.renderButtons();
             })
-            .catch((err) => { console.log(err); });
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     renderButtons() {
