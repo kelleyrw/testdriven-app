@@ -53,7 +53,7 @@ test('Exercises renders properly when authenticated', () => {
 });
 
 test('Exercises renders a snapshot properly', () => {
-  const onDidMount = jest.fn();
+  // const onDidMount = jest.fn();
   Exercises.prototype.componentDidMount = exercises;
   const tree = renderer.create(<Exercises/>).toJSON();
   expect(tree).toMatchSnapshot();
