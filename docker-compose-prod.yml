@@ -108,10 +108,13 @@ services:
                 - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
                 - REACT_APP_API_GATEWAY_URL=${REACT_APP_API_GATEWAY_URL}
                 - REACT_APP_EXERCISES_SERVICE_URL=${REACT_APP_EXERCISES_SERVICE_URL}
+                - REACT_APP_SCORES_SERVICE_URL=${REACT_APP_SCORES_SERVICE_URL}
         expose:
             - 80
         depends_on:
             - users
+            - exercises
+            - scores
 
     swagger:
         build:
@@ -123,6 +126,8 @@ services:
             - URL=swagger.json
         depends_on:
             - users
+            - exercises
+            - scores
 
     nginx:
         build:
@@ -133,6 +138,8 @@ services:
             - 80:80
         depends_on:
             - users
+            - exercises
+            - scores
             - client
 
 # ============================================================================ #
